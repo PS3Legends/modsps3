@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchQuery = '';
     let modsData = [];
     let isLoading = false;
+    let controller;
 
     const modsList = document.getElementById('mods-list');
     const searchInput = document.getElementById('search');
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingIndicator.style.display = 'none';
     document.body.appendChild(loadingIndicator);
 
-    // إضافة debounce للبحث
     const debouncedSearch = debounce(searchMods, 300);
     searchInput.addEventListener('input', debouncedSearch);
     prevBtn.addEventListener('click', goToPrevPage);
@@ -27,25 +27,37 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function debounce(func, wait) {
         let timeout;
-        return function() {
-            const context = this, args = arguments;
+        return function(...args) {
             clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(context, args), wait);
+            timeout = setTimeout(() => func.apply(this, args), wait);
         };
     }
 
     async function fetchModsData() {
         try {
+            if (controller) controller.abort();
+            controller = new AbortController();
+            
             isLoading = true;
             loadingIndicator.style.display = 'block';
             
-            const response = await fetch('getMods.php');
+            const response = await fetch('getMods.php', { 
+                signal: controller.signal 
+            });
+            
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
             if (!Array.isArray(data)) throw new Error('Expected an array of mods');
 
-            modsData = data;
+            modsData = data.filter(mod => {
+                if (!mod.title || !mod.versions) {
+                    console.warn('Invalid mod data:', mod);
+                    return false;
+                }
+                return true;
+            });
+
             if (modsData.length === 0) {
                 showNoModsMessage('No mods available. Please check back later.');
             } else {
@@ -53,8 +65,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 updatePagination();
             }
         } catch (error) {
-            console.error('Error loading mods data:', error);
-            showNoModsMessage('Failed to load mods. Please try again later.');
+            if (error.name !== 'AbortError') {
+                console.error('Error loading mods data:', error);
+                showNoModsMessage('Failed to load mods. The server might be down. Please try again later.');
+            }
         } finally {
             isLoading = false;
             loadingIndicator.style.display = 'none';
@@ -79,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredMods = filterMods();
 
         if (filteredMods.length === 0) {
+            document.getElementById('search-query').textContent = searchQuery;
             showNoModsMessage(`No mods found for "${searchQuery}". Try a different search or check back later.`);
             return;
         } else {
@@ -96,7 +111,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!searchQuery) return modsData;
         
         return modsData.filter(mod => {
-            if (!mod.title) return false;
             const titleMatch = mod.title.toLowerCase().includes(searchQuery);
             const nameMatch = mod.nameMod && mod.nameMod.toLowerCase().includes(searchQuery);
             const descMatch = mod.description && mod.description.toLowerCase().includes(searchQuery);
@@ -115,6 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const firstVersionKey = versionKeys[0] || '';
         const downloadLink = versions[firstVersionKey] || "#";
         const hasImages = mod.modImage1 || mod.modImage2;
+        const imgFallback = 'icons-buttons/default-image.png';
 
         const modElement = document.createElement('div');
         modElement.classList.add('mod-item');
@@ -129,9 +144,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="open-section">
                     <p>Preview:</p>
                     <div class="images-container">
-                        ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="${mod.title || 'Mod'} preview 1" class="open-image">` : ''}
+                        ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="${mod.title || 'Mod'} preview 1" class="open-image" onerror="this.src='${imgFallback}'">` : ''}
                         ${mod.modImage1 && mod.modImage2 ? `<img src="icons-buttons/plus.png" alt="Plus icon" class="open-image">` : ''}
-                        ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="${mod.title || 'Mod'} preview 2" class="open-image">` : ''}
+                        ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="${mod.title || 'Mod'} preview 2" class="open-image" onerror="this.src='${imgFallback}'">` : ''}
                     </div>
                 </div>` : ''}
                 
@@ -192,9 +207,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function goToPrevPage() {
         if (currentPage > 1) {
-            currentPage--;
-            renderMods();
-            updatePagination();
+            loadingIndicator.style.display = 'block';
+            setTimeout(() => {
+                currentPage--;
+                renderMods();
+                updatePagination();
+                loadingIndicator.style.display = 'none';
+            }, 100);
         }
     }
 
@@ -202,9 +221,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredMods = filterMods();
         const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
         if (currentPage < totalPages) {
-            currentPage++;
-            renderMods();
-            updatePagination();
+            loadingIndicator.style.display = 'block';
+            setTimeout(() => {
+                currentPage++;
+                renderMods();
+                updatePagination();
+                loadingIndicator.style.display = 'none';
+            }, 100);
         }
     }
 });

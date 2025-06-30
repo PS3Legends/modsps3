@@ -2,12 +2,20 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Roboto', 'Arial', sans-serif;
 }
 
 body, html {
     height: 100%;
     background-color: #fafafa;
+}
+
+.error {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 20px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .main-header {
@@ -78,8 +86,9 @@ body, html {
     margin-bottom: 20px;
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+    will-change: transform, box-shadow;
 }
 
 .mod-item:hover {
@@ -89,20 +98,20 @@ body, html {
 
 .mod-info h2 {
     font-size: 1.5rem;
-    color: #fafafa;
+    color: #ffffff;
     margin-bottom: 10px;
 }
 
 .mod-name {
     font-size: 1.1rem;
-    color: #ddd;
+    color: #e0e0e0;
     margin-bottom: 5px;
     font-weight: bold;
 }
 
 .mod-description {
     font-size: 1rem;
-    color: #ccc;
+    color: #e0e0e0;
     margin-bottom: 15px;
     line-height: 1.4;
 }
@@ -133,6 +142,7 @@ body, html {
     height: 24px;
     object-fit: contain;
     border-radius: 4px;
+    max-width: 100%;
 }
 
 .version-select {
@@ -166,10 +176,13 @@ body, html {
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
     margin-top: 10px;
     border: none;
     cursor: pointer;
+    will-change: transform, background;
 }
 
 .download-btn:hover:not(.disabled-link) {
@@ -180,6 +193,7 @@ body, html {
 
 .download-btn.disabled-link {
     background: #666;
+    color: #ccc;
     cursor: not-allowed;
     opacity: 0.7;
 }
