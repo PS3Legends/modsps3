@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1",
+    "title": "GTA V Super Mod",
+    "nameMod": "Super Speed + Weapons",
+    "description": "Adds super speed and powerful weapons.",
+    "modImage1": "images/mod1-1.jpg",
+    "modImage2": "images/mod1-2.jpg",
+    "versions": {
+      "v1.0": "downloads/mod1-v1.0.zip",
+      "v1.1": "downloads/mod1-v1.1.zip"
+    }
+  },
+  {
+    "id": "2",
+    "title": "Minecraft Shader Pack",
+    "nameMod": "Ultra Realistic",
+    "description": "Adds realistic lighting and shadows to Minecraft.",
+    "modImage1": "images/mc1.jpg",
+    "versions": {
+      "v2.3": "downloads/mc-shader-v2.3.zip"
+    }
+  }
+]
