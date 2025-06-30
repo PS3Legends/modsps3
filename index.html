@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Mods</title>
+    <meta name="description" content="Browse and download mods for your favorite games.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -19,7 +21,9 @@
     </div>
 
     <section class="mods-list" id="mods-list">
-        <!-- Mods will be displayed here -->
+        <p id="no-mods-message" style="display: none; text-align: center; color: gray;">
+            No mods found. Try a different search or check back later.
+        </p>
     </section>
 
     <div class="pagination">
@@ -32,6 +36,6 @@
         <p>&copy; 2025 Game Mods. All rights reserved.</p>
     </footer>
 
-    <script src="assets/js/script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
