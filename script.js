@@ -41,22 +41,24 @@ document.addEventListener('DOMContentLoaded', function () {
         updatePagination();
     }
 
-    function renderMods() {
-        modsList.innerHTML = '';
-        const filteredMods = filterMods();
+function renderMods() {
+    modsList.innerHTML = '';
+    const filteredMods = filterMods();
 
-        if (filteredMods.length === 0) {
-            noModsMessage.style.display = 'block';
-            return;
-        } else {
-            noModsMessage.style.display = 'none';
-        }
+    if (filteredMods.length === 0) {
+        noModsMessage.style.display = 'block';
+        document.getElementById('search-query').textContent = searchQuery;
+        return;
+    } else {
+        noModsMessage.style.display = 'none';
+    }
 
-        const paginatedMods = paginateMods(filteredMods);
-        paginatedMods.forEach(mod => {
-            const modElement = createModElement(mod);
-            modsList.appendChild(modElement);
-        });
+    const paginatedMods = paginateMods(filteredMods);
+    paginatedMods.forEach(mod => {
+        const modElement = createModElement(mod);
+        modsList.appendChild(modElement);
+    });
+}
     }
 
     function filterMods() {

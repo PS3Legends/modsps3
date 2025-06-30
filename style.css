@@ -277,3 +277,17 @@ body, html {
         max-width: 100%;
     }
 }
+
+#no-mods-message {
+    font-size: 1.2rem;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #fff3e0;
+    border-radius: 5px;
+    border-left: 4px solid #ff9800;
+}
+
+#search-query {
+    font-weight: bold;
+    color: #ff5722;
+}
