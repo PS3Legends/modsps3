@@ -6,6 +6,9 @@
     <title>Game Mods</title>
     <meta name="description" content="Browse and download mods for your favorite games.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -21,15 +24,15 @@
     </div>
 
     <section class="mods-list" id="mods-list">
-        <p id="no-mods-message" style="display: none; text-align: center; color: gray;">
-    No mods found for "<span id="search-query"></span>". Try a different search or check back later.
-</p>
+        <p id="no-mods-message" style="display: none;">
+            No mods found for "<span id="search-query"></span>". Try a different search or check back later.
+        </p>
     </section>
 
     <div class="pagination">
-        <button id="prev">Previous</button>
+        <button id="prev" aria-label="Previous page">Previous</button>
         <div class="page-numbers" id="page-numbers"></div>
-        <button id="next">Next</button>
+        <button id="next" aria-label="Next page">Next</button>
     </div>
 
     <footer class="footer">
