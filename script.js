@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const versions = mod.versions || {};
         const versionKeys = Object.keys(versions);
         const hasVersions = versionKeys.length > 0;
-        const imgFallback = 'icons-buttons/fallback.png';
+        const imgFallback = 'icons-buttons/plus.png';
         const hasImages = mod.modImage1 || mod.modImage2;
         const rating = mod.rating || 0;
 
