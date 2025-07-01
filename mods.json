@@ -3,15 +3,12 @@
     "title": "GTA V Real Life Mod",
     "nameMod": "Real Life",
     "game": "GTA",
-    "description": "Adds real-life features to GTA V including realistic physics, weather, and AI behaviors.",
     "modImage1": "icons-buttons/R1.png",
     "modImage2": "icons-buttons/L2.png",
     "versions": {
       "v1.0": "https://example.com/download1.zip",
       "v2.0": "https://example.com/download2.zip"
     },
-    "rating": 4.5,
-    "downloadCount": 12500,
     "lastUpdated": "2025-05-15",
     "fileSize": "45MB",
     "author": "ModDevTeam"
@@ -20,49 +17,39 @@
     "title": "Minecraft Ultra Shaders",
     "nameMod": "Ultra Shaders",
     "game": "Minecraft",
-    "description": "Makes Minecraft look more realistic with advanced lighting, shadows, and water effects.",
     "modImage1": "icons-buttons/R3.png",
     "modImage2": "icons-buttons/L4.png",
     "versions": {
       "v1.1": "https://example.com/mcshader.zip",
       "v1.2": "https://example.com/mcshader-v2.zip"
     },
-    "rating": 4.8,
-    "downloadCount": 18700,
     "lastUpdated": "2025-06-20",
     "fileSize": "32MB",
     "author": "ShaderMaster"
   },
   {
-    "title": "GTA V Zombie Apocalypse",
-    "nameMod": "Zombie Mod",
-    "game": "GTA",
-    "description": "Turns Los Santos into a zombie-infested wasteland with survival mechanics.",
+    "title": "Fortnite Skin Pack",
+    "nameMod": "Premium Skins",
+    "game": "Fortnite",
     "modImage1": "icons-buttons/R5.png",
     "versions": {
-      "v3.2": "https://example.com/zombie-mod.zip"
+      "v3.2": "https://example.com/fortnite-skins.zip"
     },
-    "rating": 4.2,
-    "downloadCount": 8900,
     "lastUpdated": "2025-04-10",
     "fileSize": "28MB",
-    "author": "ZombieLabs"
+    "author": "SkinDesigner"
   },
   {
-    "title": "Minecraft Fantasy RPG",
-    "nameMod": "RPG Expansion",
-    "game": "Minecraft",
-    "description": "Adds RPG elements to Minecraft including quests, skills, and new fantasy mobs.",
+    "title": "Among Us Custom Maps",
+    "nameMod": "New Maps",
+    "game": "AmongUs",
     "modImage1": "icons-buttons/R7.png",
     "modImage2": "icons-buttons/L8.png",
     "versions": {
-      "v2.5": "https://example.com/rpg-mod.zip",
-      "v2.6": "https://example.com/rpg-mod-v2.zip"
+      "v2.5": "https://example.com/amongus-maps.zip"
     },
-    "rating": 4.7,
-    "downloadCount": 15400,
     "lastUpdated": "2025-06-05",
-    "fileSize": "65MB",
-    "author": "FantasyMods"
+    "fileSize": "15MB",
+    "author": "MapCreator"
   }
 ]

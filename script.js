@@ -20,38 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingIndicator.className = 'loading-indicator';
     document.body.appendChild(loadingIndicator);
 
-    window.addEventListener('online', updateOnlineStatus);
-    window.addEventListener('offline', updateOnlineStatus);
-    updateOnlineStatus();
-
-    function updateOnlineStatus() {
-        const statusElement = document.createElement('div');
-        statusElement.className = `online-status ${navigator.onLine ? 'online' : 'offline'}`;
-        statusElement.textContent = navigator.onLine ? 'Online' : 'Offline';
-        
-        const existingStatus = document.querySelector('.online-status');
-        if (existingStatus) {
-            existingStatus.replaceWith(statusElement);
-        } else {
-            document.body.prepend(statusElement);
-        }
-    }
-
-    function updateDateTime() {
-        const now = new Date();
-        const options = { 
-            year: 'numeric', 
-            month: 'long', 
-            day: 'numeric',
-            weekday: 'long'
-        };
-        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
-        document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US');
-    }
-
-    updateDateTime();
-    setInterval(updateDateTime, 1000);
-
     const debouncedSearch = debounce(searchMods, 300);
     searchInput.addEventListener('input', debouncedSearch);
     prevBtn.addEventListener('click', goToPrevPage);
@@ -78,13 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
-    function renderRating(rating) {
-        if (!rating) return '';
-        const fullStars = '★'.repeat(Math.floor(rating));
-        const emptyStars = '☆'.repeat(5 - Math.floor(rating));
-        return `<span class="rating" title="${rating}/5">${fullStars}${emptyStars}</span>`;
-    }
-
     async function fetchModsData() {
         try {
             if (controller) controller.abort();
@@ -105,42 +66,16 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
-            if (!Array.isArray(data)) throw new Error('Expected an array of mods');
-
-            modsData = data.map(mod => ({
-                ...mod,
-                id: mod.id || Math.random().toString(36).substr(2, 9),
-                rating: mod.rating || Math.floor(Math.random() * 3) + 3,
-                downloadCount: mod.downloadCount || Math.floor(Math.random() * 10000),
-                lastUpdated: mod.lastUpdated || new Date().toISOString().split('T')[0]
-            })).filter(mod => {
-                if (!mod.title || !mod.versions) {
-                    console.warn('Invalid mod data:', mod);
-                    return false;
-                }
-                return true;
-            });
-
-            localStorage.setItem('modsData', JSON.stringify(modsData));
-            localStorage.setItem('modsLastFetch', Date.now());
+            modsData = data;
 
             if (modsData.length === 0) {
-                showNoModsMessage('No mods available. Please check back later.');
+                showNoModsMessage('No mods available.');
             } else {
                 renderMods();
                 updatePagination();
             }
         } catch (error) {
-            const cachedData = localStorage.getItem('modsData');
-            if (cachedData) {
-                modsData = JSON.parse(cachedData);
-                renderMods();
-                updatePagination();
-            }
-            
-            if (error.name !== 'AbortError') {
-                showError('Failed to load mods. Showing cached data if available.');
-            }
+            showError('Failed to load mods.');
         } finally {
             isLoading = false;
             loadingIndicator.style.display = 'none';
@@ -183,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (filteredMods.length === 0) {
             document.getElementById('search-query').textContent = searchQuery;
-            showNoModsMessage(`No mods found for "${searchQuery}". Try a different search or check back later.`);
+            showNoModsMessage(`No mods found for "${searchQuery}". Try a different search.`);
             return;
         } else {
             noModsMessage.style.display = 'none';
@@ -210,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const searchFields = [
                     mod.title,
                     mod.nameMod,
-                    mod.description,
                     mod.author
                 ].filter(Boolean);
                 
@@ -242,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
         modElement.innerHTML = `
             <div class="mod-header">
                 <h2>${mod.title || 'Untitled Mod'}</h2>
-                ${renderRating(mod.rating)}
             </div>
             ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
             
@@ -350,17 +283,5 @@ document.addEventListener('DOMContentLoaded', function () {
             updatePagination();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-    }
-
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then(registration => {
-                    console.log('ServiceWorker registration successful');
-                })
-                .catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
-                });
-        });
     }
 });

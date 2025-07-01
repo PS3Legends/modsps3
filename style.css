@@ -11,54 +11,78 @@ body {
     color: white;
     padding: 20px 0;
     text-align: center;
+    margin-bottom: 30px;
 }
 
 .search-container {
     max-width: 1200px;
-    margin: 20px auto;
+    margin: 0 auto 30px;
     padding: 0 20px;
 }
 
 .search-box {
-    margin-bottom: 15px;
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 20px;
 }
 
 .search-box input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 12px 20px 12px 45px;
+    border: 2px solid #ddd;
+    border-radius: 30px;
     font-size: 16px;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.search-box input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    outline: none;
+}
+
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    fill: #777;
 }
 
 .filters {
     display: flex;
-    gap: 10px;
-    margin: 15px 0;
+    gap: 8px;
+    margin: 15px auto;
     flex-wrap: wrap;
     justify-content: center;
+    max-width: 800px;
 }
 
 .filter-btn {
     padding: 8px 16px;
     border: none;
     border-radius: 20px;
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
     color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 500;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 14px;
 }
 
 .filter-btn.active {
-    background-color: #4CAF50;
+    background-color: #2c3e50;
     color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .filter-btn:hover:not(.active) {
-    background-color: #e0e0e0;
+    background-color: #d0d0d0;
+    transform: translateY(-2px);
 }
 
 .mods-list {
@@ -73,22 +97,21 @@ body {
 
 .mod-item {
     background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     padding: 15px;
     width: 100%;
-    max-width: 350px;
-    transition: transform 0.3s ease;
+    max-width: 320px;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
 }
 
 .mod-item:hover {
     transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
 
 .mod-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 10px;
 }
 
@@ -97,34 +120,19 @@ body {
     font-size: 18px;
 }
 
-.rating {
-    color: #FFD700;
-    font-size: 16px;
-}
-
 .mod-images {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     margin: 10px 0;
-    flex-wrap: wrap;
 }
 
 .mod-images img {
     max-width: 100%;
     height: auto;
+    max-height: 150px;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease;
-}
-
-@media (min-width: 768px) {
-    .mod-images img {
-        max-width: 48%;
-    }
-}
-
-.mod-images img:hover {
-    transform: scale(1.02);
+    object-fit: cover;
 }
 
 .version-select {
@@ -133,17 +141,17 @@ body {
 
 .version-select select {
     width: 100%;
-    padding: 8px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    font-size: 14px;
 }
 
 .mod-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 10px;
     font-size: 12px;
     color: #777;
+    margin-top: 10px;
 }
 
 .download-btn {
@@ -171,14 +179,14 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 20px 0;
+    margin: 30px 0;
     gap: 10px;
 }
 
 .pagination button {
     padding: 8px 16px;
     border: none;
-    background-color: #4CAF50;
+    background-color: #2c3e50;
     color: white;
     border-radius: 4px;
     cursor: pointer;
@@ -197,32 +205,14 @@ body {
 .page-btn {
     padding: 8px 12px;
     border: none;
-    background-color: #f0f0f0;
+    background-color: #e0e0e0;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .page-btn.active {
-    background-color: #4CAF50;
+    background-color: #2c3e50;
     color: white;
-}
-
-.share-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.share-btn img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    transition: transform 0.3s;
-}
-
-.share-btn img:hover {
-    transform: scale(1.1);
 }
 
 .footer {
@@ -230,32 +220,7 @@ body {
     padding: 20px;
     background-color: #2c3e50;
     color: white;
-}
-
-.current-time {
-    margin-bottom: 10px;
-    font-size: 14px;
-}
-
-.online-status {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    z-index: 1000;
-}
-
-.online-status.online {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.online-status.offline {
-    background-color: #f44336;
-    color: white;
+    margin-top: 30px;
 }
 
 .fade-in {
@@ -283,4 +248,14 @@ body {
     0% { width: 0; }
     50% { width: 50%; }
     100% { width: 100%; }
+}
+
+@media (max-width: 768px) {
+    .mod-item {
+        max-width: 100%;
+    }
+    
+    .mod-images img {
+        max-height: 200px;
+    }
 }
