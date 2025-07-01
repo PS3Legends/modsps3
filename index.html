@@ -24,7 +24,7 @@
         <div class="search-box">
             <input type="search" id="search" placeholder="Search for mods...">
         </div>
-        <div class="filters">
+        <div class="filters" id="filters">
             <button class="filter-btn active" data-game="all">All</button>
             <button class="filter-btn" data-game="GTA">GTA V</button>
             <button class="filter-btn" data-game="Minecraft">Minecraft</button>
@@ -35,6 +35,7 @@
 
     <section class="mods-list" id="mods-list">
         <div id="loading-message" class="loading-message" style="display: none;">
+            <div class="loading-indicator"></div>
             <p>Loading mods...</p>
         </div>
         <p id="no-mods-message" style="display: none;">No mods found.</p>

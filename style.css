@@ -46,6 +46,21 @@ body, html {
     font-size: 1.2rem;
 }
 
+.loading-indicator {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .security-warning {
     background-color: #fff3e0;
     color: var(--warning-color);
@@ -166,6 +181,11 @@ body, html {
     margin-bottom: 10px;
 }
 
+.mod-info .mod-name {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
 .rating {
     color: #FFD700;
     font-size: 1.2rem;
@@ -189,6 +209,7 @@ body, html {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     transition: transform 0.3s ease;
+    background-color: #e0e0e0;
 }
 
 .mod-images img:hover {
@@ -216,7 +237,7 @@ body, html {
 .download-btn {
     display: inline-block;
     padding: 14px 35px;
-    background: linear-gradient(135deg, #ff0055, var(--primary-color));
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--text-light);
     font-size: 1.2rem;
     font-weight: bold;
@@ -232,6 +253,7 @@ body, html {
 
 .download-btn:hover:not(.disabled-link) {
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
 }
 
 .download-btn.disabled-link {
@@ -239,6 +261,11 @@ body, html {
     color: #ccc;
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+.no-versions {
+    color: var(--text-muted);
+    font-style: italic;
 }
 
 .mod-footer {
@@ -251,6 +278,12 @@ body, html {
     gap: 10px;
 }
 
+.mod-footer small {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 .pagination {
     display: flex;
     justify-content: center;
@@ -261,12 +294,23 @@ body, html {
 
 .pagination button {
     padding: 12px 20px;
-    background: linear-gradient(135deg, var(--success-color), #2E7D32);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--text-light);
     border: none;
     cursor: pointer;
     font-size: 1rem;
     border-radius: var(--border-radius);
+    transition: var(--transition);
+}
+
+.pagination button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .page-numbers {
@@ -280,15 +324,21 @@ body, html {
     min-width: 45px;
     padding: 10px 15px;
     background-color: #f0f0f0;
-    color: var(--success-color);
-    border: 2px solid var(--success-color);
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
     cursor: pointer;
     border-radius: var(--border-radius);
+    transition: var(--transition);
 }
 
 .page-numbers button.active {
-    background: linear-gradient(135deg, var(--primary-color), #ff5722);
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--text-light);
+    border-color: var(--primary-dark);
+}
+
+.page-numbers button:hover:not(.active) {
+    background-color: #e0e0e0;
 }
 
 .footer {
@@ -313,6 +363,11 @@ body, html {
     padding: 5px 10px;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+
+.footer-links a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 @media (max-width: 768px) {
@@ -328,8 +383,13 @@ body, html {
     .mod-images img {
         width: 100%;
         height: auto;
+        max-height: 200px;
     }
     .download-btn {
         width: 100%;
+    }
+    .version-select {
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

@@ -14,16 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const noModsMessage = document.getElementById('no-mods-message');
     const filterButtons = document.querySelectorAll('.filter-btn');
     const loadingMessage = document.getElementById('loading-message');
-    const loadingIndicator = document.querySelector('.loading-indicator');
     const securityWarning = document.getElementById('security-warning');
+    const filtersContainer = document.getElementById('filters');
 
     document.getElementById('close-warning').addEventListener('click', () => {
         securityWarning.style.display = 'none';
     });
-
-    setTimeout(() => {
-        securityWarning.style.display = 'none';
-    }, 5000);
 
     init();
 
@@ -63,8 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (controller) controller.abort();
             controller = new AbortController();
             
-            loadingIndicator.style.display = 'block';
-            loadingMessage.style.display = 'block';
+            loadingMessage.style.display = 'flex';
             modsList.style.display = 'none';
             noModsMessage.style.display = 'none';
             
@@ -83,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return mod;
             });
 
+            updateFilterCounts();
+            
             if (modsData.length === 0) {
                 showNoModsMessage('No mods available.');
             } else {
@@ -91,14 +88,24 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } catch (error) {
             if (error.name !== 'AbortError') {
-                showError('Failed to load mods.');
+                showError('Failed to load mods. Please try again later.');
                 console.error('Fetch error:', error);
             }
         } finally {
-            loadingIndicator.style.display = 'none';
             loadingMessage.style.display = 'none';
             modsList.style.display = 'flex';
         }
+    }
+
+    function updateFilterCounts() {
+        filterButtons.forEach(btn => {
+            if (btn.dataset.game === 'all') {
+                btn.textContent = 'All';
+            } else {
+                const count = modsData.filter(mod => mod.game === btn.dataset.game).length;
+                btn.textContent = `${btn.textContent.split(' (')[0]} (${count})`;
+            }
+        });
     }
 
     function generateId(title) {
@@ -140,7 +147,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function searchMods() {
         const query = searchInput.value.trim();
-        if (query.length < 2 && query.length > 0) return;
+        if (query.length > 0 && query.length < 2) {
+            showNoModsMessage('Please enter at least 2 characters to search.');
+            return;
+        }
         searchQuery = query.toLowerCase();
         currentPage = 1;
         renderMods();
@@ -198,34 +208,34 @@ document.addEventListener('DOMContentLoaded', function () {
         modElement.innerHTML = `
             <div class="mod-header">
                 <div class="mod-info">
-                    <h2>${mod.title || 'Untitled Mod'}</h2>
-                    ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
+                    <h2>${escapeHtml(mod.title || 'Untitled Mod')}</h2>
+                    ${mod.nameMod ? `<p class="mod-name">${escapeHtml(mod.nameMod)}</p>` : ''}
                 </div>
                 <div class="rating">${stars}</div>
             </div>
             
             ${hasImages ? `
             <div class="mod-images">
-                ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="${mod.title || 'Mod'} preview" onerror="this.src='${imgFallback}'">` : ''}
-                ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="${mod.title || 'Mod'} preview" onerror="this.src='${imgFallback}'">` : ''}
+                ${mod.modImage1 ? `<img src="${escapeHtml(mod.modImage1)}" alt="${escapeHtml(mod.title || 'Mod')} preview" onerror="this.src='${imgFallback}'">` : ''}
+                ${mod.modImage2 ? `<img src="${escapeHtml(mod.modImage2)}" alt="${escapeHtml(mod.title || 'Mod')} preview" onerror="this.src='${imgFallback}'">` : ''}
             </div>` : ''}
             
             ${hasVersions ? `
             <div class="version-select">
                 <label for="version-${mod.id}">Select Version:</label>
                 <select id="version-${mod.id}">
-                    ${versionKeys.map(version => `<option value="${validateUrl(versions[version]) || '#'}">${version} ${mod.fileSize ? `(${mod.fileSize})` : ''}</option>`).join('')}
+                    ${versionKeys.map(version => `<option value="${escapeHtml(validateUrl(versions[version]) || '#')}">${escapeHtml(version)} ${mod.fileSize ? `(${escapeHtml(mod.fileSize)})` : ''}</option>`).join('')}
                 </select>
-            </div>` : '<p class="no-versions">No versions available</p>'}
+            </div>` : '<p class="no-versions">Coming soon</p>'}
             
             <div class="mod-footer">
-                ${mod.author ? `<small>Author: ${mod.author}</small>` : ''}
-                ${mod.lastUpdated ? `<small>Updated: ${mod.lastUpdated}</small>` : ''}
+                ${mod.author ? `<small><span>Author:</span> ${escapeHtml(mod.author)}</small>` : '<small>Author: Unknown</small>'}
+                ${mod.lastUpdated ? `<small><span>Updated:</span> ${escapeHtml(mod.lastUpdated)}</small>` : ''}
             </div>
             
-            <a href="${hasVersions ? validateUrl(versions[versionKeys[0]]) || '#' : '#'}" 
+            <a href="${hasVersions ? escapeHtml(validateUrl(versions[versionKeys[0]]) || '#') : '#'}" 
                class="download-btn ${!hasVersions ? 'disabled-link' : ''}">
-                ${hasVersions ? "Download Now" : "Link unavailable"}
+                ${hasVersions ? "Download Now" : "Coming soon"}
             </a>
         `;
 
@@ -236,11 +246,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 const url = validateUrl(this.value);
                 downloadBtn.href = url || '#';
                 downloadBtn.classList.toggle('disabled-link', !url);
-                downloadBtn.textContent = url ? "Download Now" : "Link unavailable";
+                downloadBtn.textContent = url ? "Download Now" : "Coming soon";
             });
         }
 
         return modElement;
+    }
+
+    function escapeHtml(unsafe) {
+        if (!unsafe) return '';
+        return unsafe.toString()
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     function validateUrl(url) {
@@ -286,7 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     currentPage = page;
                     renderMods();
                     updatePagination();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
                 pageNumbersContainer.appendChild(pageBtn);
                 prevPage = page;
@@ -301,7 +320,6 @@ document.addEventListener('DOMContentLoaded', function () {
             currentPage--;
             renderMods();
             updatePagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
@@ -312,7 +330,6 @@ document.addEventListener('DOMContentLoaded', function () {
             currentPage++;
             renderMods();
             updatePagination();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 });
