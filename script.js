@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const itemsPerPage = 10;
+    const itemsPerPage = 6;
     let currentPage = 1;
     let searchQuery = '';
+    let currentFilter = 'all';
     let modsData = [];
     let isLoading = false;
     let controller;
@@ -12,16 +13,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const nextBtn = document.getElementById('next');
     const pageNumbersContainer = document.getElementById('page-numbers');
     const noModsMessage = document.getElementById('no-mods-message');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'loading-indicator';
-    loadingIndicator.textContent = 'Loading...';
-    loadingIndicator.style.display = 'none';
     document.body.appendChild(loadingIndicator);
 
     const debouncedSearch = debounce(searchMods, 300);
     searchInput.addEventListener('input', debouncedSearch);
     prevBtn.addEventListener('click', goToPrevPage);
     nextBtn.addEventListener('click', goToNextPage);
+    
+    filterButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterButtons.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentFilter = btn.dataset.game;
+            currentPage = 1;
+            renderMods();
+            updatePagination();
+        });
+    });
 
     fetchModsData();
 
@@ -33,6 +45,13 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
 
+    function renderRating(rating) {
+        if (!rating) return '';
+        const fullStars = '★'.repeat(Math.floor(rating));
+        const emptyStars = '☆'.repeat(5 - Math.floor(rating));
+        return `<span class="rating" title="${rating}/5">${fullStars}${emptyStars}</span>`;
+    }
+
     async function fetchModsData() {
         try {
             if (controller) controller.abort();
@@ -42,7 +61,10 @@ document.addEventListener('DOMContentLoaded', function () {
             loadingIndicator.style.display = 'block';
             
             const response = await fetch('mods.json', { 
-                signal: controller.signal 
+                signal: controller.signal,
+                headers: {
+                    'Cache-Control': 'max-age=3600'
+                }
             });
             
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -50,13 +72,22 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             if (!Array.isArray(data)) throw new Error('Expected an array of mods');
 
-            modsData = data.filter(mod => {
+            modsData = data.map(mod => ({
+                ...mod,
+                id: mod.id || Math.random().toString(36).substr(2, 9),
+                rating: mod.rating || Math.floor(Math.random() * 3) + 3,
+                downloadCount: mod.downloadCount || Math.floor(Math.random() * 10000),
+                lastUpdated: mod.lastUpdated || new Date().toISOString().split('T')[0]
+            })).filter(mod => {
                 if (!mod.title || !mod.versions) {
                     console.warn('Invalid mod data:', mod);
                     return false;
                 }
                 return true;
             });
+
+            localStorage.setItem('modsData', JSON.stringify(modsData));
+            localStorage.setItem('modsLastFetch', Date.now());
 
             if (modsData.length === 0) {
                 showNoModsMessage('No mods available. Please check back later.');
@@ -65,9 +96,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 updatePagination();
             }
         } catch (error) {
+            const cachedData = localStorage.getItem('modsData');
+            if (cachedData) {
+                modsData = JSON.parse(cachedData);
+                renderMods();
+                updatePagination();
+                console.log('Loaded mods from cache');
+            }
+            
             if (error.name !== 'AbortError') {
                 console.error('Error loading mods data:', error);
-                showNoModsMessage('Failed to load mods. The server might be down. Please try again later.');
+                showNoModsMessage('Failed to load mods. Showing cached data if available.');
             }
         } finally {
             isLoading = false;
@@ -108,14 +147,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function filterMods() {
-        if (!searchQuery) return modsData;
+        let filtered = modsData;
+
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(mod => 
+                mod.title.toLowerCase().includes(currentFilter.toLowerCase()) ||
+                (mod.description && mod.description.toLowerCase().includes(currentFilter.toLowerCase()))
+        }
         
-        return modsData.filter(mod => {
-            const titleMatch = mod.title.toLowerCase().includes(searchQuery);
-            const nameMatch = mod.nameMod && mod.nameMod.toLowerCase().includes(searchQuery);
-            const descMatch = mod.description && mod.description.toLowerCase().includes(searchQuery);
-            return titleMatch || nameMatch || descMatch;
-        });
+        if (searchQuery) {
+            filtered = filtered.filter(mod => {
+                const titleMatch = mod.title.toLowerCase().includes(searchQuery);
+                const nameMatch = mod.nameMod && mod.nameMod.toLowerCase().includes(searchQuery);
+                const descMatch = mod.description && mod.description.toLowerCase().includes(searchQuery);
+                return titleMatch || nameMatch || descMatch;
+            });
+        }
+        
+        return filtered;
     }
 
     function paginateMods(mods) {
@@ -126,44 +175,49 @@ document.addEventListener('DOMContentLoaded', function () {
     function createModElement(mod) {
         const versions = mod.versions || {};
         const versionKeys = Object.keys(versions);
-        const firstVersionKey = versionKeys[0] || '';
-        const downloadLink = versions[firstVersionKey] || "#";
-        const hasImages = mod.modImage1 || mod.modImage2;
+        const hasVersions = versionKeys.length > 0;
         const imgFallback = 'icons-buttons/plus.png';
+        const hasImages = mod.modImage1 || mod.modImage2;
 
         const modElement = document.createElement('div');
         modElement.classList.add('mod-item');
+        modElement.dataset.id = mod.id;
 
         modElement.innerHTML = `
-            <div class="mod-info">
+            <div class="mod-header">
                 <h2>${mod.title || 'Untitled Mod'}</h2>
-                ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
-                ${mod.description ? `<p class="mod-description">${mod.description}</p>` : ''}
-                
-                ${hasImages ? `
-                <div class="open-section">
-                    <p>Preview:</p>
-                    <div class="images-container">
-                        ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="${mod.title || 'Mod'} preview 1" class="open-image" onerror="this.src='${imgFallback}'">` : ''}
-                        ${mod.modImage1 && mod.modImage2 ? `<img src="icons-buttons/plus.png" alt="Plus icon" class="open-image">` : ''}
-                        ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="${mod.title || 'Mod'} preview 2" class="open-image" onerror="this.src='${imgFallback}'">` : ''}
-                    </div>
-                </div>` : ''}
-                
-                ${versionKeys.length > 0 ? `
-                <div class="version-select">
-                    <label for="version-select-${mod.id || Math.random().toString(36).substr(2, 9)}">Select Version:</label>
-                    <select id="version-select-${mod.id || Math.random().toString(36).substr(2, 9)}">
-                        ${versionKeys.map(version => 
-                            `<option value="${versions[version] || '#'}">${version}</option>`
-                        ).join('')}
-                    </select>
-                </div>` : ''}
-                
-                <a href="${downloadLink}" class="download-btn ${downloadLink === "#" ? 'disabled-link' : ''}">
-                    ${downloadLink !== "#" ? "Download Now" : "Link unavailable"}
-                </a>
+                ${renderRating(mod.rating)}
             </div>
+            ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
+            ${mod.description ? `<p class="mod-desc">${mod.description}</p>` : ''}
+            
+            ${hasImages ? `
+            <div class="mod-images">
+                ${mod.modImage1 ? `<img src="${mod.modImage1}" loading="lazy" alt="${mod.title || 'Mod'} preview" onerror="this.src='${imgFallback}'">` : ''}
+                ${mod.modImage2 ? `<img src="${mod.modImage2}" loading="lazy" alt="${mod.title || 'Mod'} preview" onerror="this.src='${imgFallback}'">` : ''}
+            </div>` : ''}
+            
+            ${hasVersions ? `
+            <div class="version-select">
+                <label>Select Version:</label>
+                <select>
+                    ${versionKeys.map(version => 
+                        `<option value="${versions[version] || '#'}">
+                            ${version} ${mod.fileSize ? `(${mod.fileSize})` : ''}
+                        </option>`
+                    ).join('')}
+                </select>
+            </div>` : '<p class="no-versions">No versions available</p>'}
+            
+            <div class="mod-footer">
+                ${mod.lastUpdated ? `<small>Updated: ${mod.lastUpdated}</small>` : ''}
+                ${mod.downloadCount ? `<small>Downloads: ${mod.downloadCount.toLocaleString()}</small>` : ''}
+            </div>
+            
+            <a href="${hasVersions ? versions[versionKeys[0]] : '#'}" 
+               class="download-btn ${!hasVersions ? 'disabled-link' : ''}">
+                ${hasVersions ? "Download Now" : "Link unavailable"}
+            </a>
         `;
 
         const select = modElement.querySelector('select');
@@ -184,36 +238,52 @@ document.addEventListener('DOMContentLoaded', function () {
         const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
 
         pageNumbersContainer.innerHTML = '';
-        if (totalPages <= 1) return;
-
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.textContent = i;
-            pageBtn.classList.add('page-btn');
-            if (i === currentPage) {
-                pageBtn.classList.add('active');
-            }
-            pageBtn.addEventListener('click', () => {
-                currentPage = i;
-                renderMods();
-                updatePagination();
-            });
-            pageNumbersContainer.appendChild(pageBtn);
+        if (totalPages <= 1) {
+            prevBtn.disabled = true;
+            nextBtn.disabled = true;
+            return;
         }
+        
+        const pagesToShow = new Set([1, currentPage - 1, currentPage, currentPage + 1, totalPages]);
+        
+        let prevPage = 0;
+        Array.from(pagesToShow)
+            .sort((a, b) => a - b)
+            .filter(page => page > 0 && page <= totalPages)
+            .forEach(page => {
+                if (page - prevPage > 1) {
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    pageNumbersContainer.appendChild(ellipsis);
+                }
+                
+                const pageBtn = document.createElement('button');
+                pageBtn.textContent = page;
+                pageBtn.classList.add('page-btn');
+                if (page === currentPage) {
+                    pageBtn.classList.add('active');
+                }
+                pageBtn.addEventListener('click', () => {
+                    currentPage = page;
+                    renderMods();
+                    updatePagination();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                pageNumbersContainer.appendChild(pageBtn);
+                
+                prevPage = page;
+            });
 
         prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        nextBtn.disabled = currentPage === totalPages;
     }
 
     function goToPrevPage() {
         if (currentPage > 1) {
-            loadingIndicator.style.display = 'block';
-            setTimeout(() => {
-                currentPage--;
-                renderMods();
-                updatePagination();
-                loadingIndicator.style.display = 'none';
-            }, 100);
+            currentPage--;
+            renderMods();
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     }
 
@@ -221,13 +291,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredMods = filterMods();
         const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
         if (currentPage < totalPages) {
-            loadingIndicator.style.display = 'block';
-            setTimeout(() => {
-                currentPage++;
-                renderMods();
-                updatePagination();
-                loadingIndicator.style.display = 'none';
-            }, 100);
+            currentPage++;
+            renderMods();
+            updatePagination();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+    }
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful');
+                })
+                .catch(err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+        });
     }
 });

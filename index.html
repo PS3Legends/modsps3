@@ -10,6 +10,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Game Mods Hub",
+        "url": "https://yourdomain.com",
+        "description": "Download the best mods for GTA V, Minecraft, and more."
+    }
+    </script>
 </head>
 <body>
     <noscript>
@@ -25,6 +34,11 @@
         <div class="search-box">
             <input type="search" id="search" placeholder="Search for mods..." aria-label="Search for mods">
         </div>
+        <div class="filters">
+            <button class="filter-btn active" data-game="all">All</button>
+            <button class="filter-btn" data-game="GTA">GTA V</button>
+            <button class="filter-btn" data-game="Minecraft">Minecraft</button>
+        </div>
     </div>
 
     <section class="mods-list" id="mods-list">
@@ -37,6 +51,11 @@
         <button id="prev" aria-label="Previous page">Previous</button>
         <div class="page-numbers" id="page-numbers"></div>
         <button id="next" aria-label="Next page">Next</button>
+    </div>
+
+    <div class="share-buttons">
+        <a href="https://twitter.com/share?url=URL_HERE" class="share-btn twitter" target="_blank">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=URL_HERE" class="share-btn facebook" target="_blank">Facebook</a>
     </div>
 
     <footer class="footer">
