@@ -206,7 +206,12 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="mod-header">
                 <div class="mod-info">
                     <h2>${escapeHtml(mod.title || 'Untitled Mod')}</h2>
-                    ${mod.nameMod ? `<p class="mod-name">${escapeHtml(mod.nameMod)}</p>` : ''}
+                    <p class="open-preview">
+    Open: 
+    ${mod.openImageLeft ? `<img src="${escapeHtml(mod.openImageLeft)}" class="open-img" alt="Open Left" onerror="this.style.display='none'">` : ''}
+    <img src="icons-buttons/open-center.png" class="open-img center" alt="Open Center" onerror="this.style.display='none'">
+    ${mod.openImageRight ? `<img src="${escapeHtml(mod.openImageRight)}" class="open-img" alt="Open Right" onerror="this.style.display='none'">` : ''}
+</p>
                 </div>
             </div>
             ${hasImages ? `

@@ -196,7 +196,7 @@ body, html {
 
 .mod-images img {
     width: 100%;
-    max-width: 300px;
+    max-width: 200px;
     height: auto;
     object-fit: contain;
     border-radius: var(--border-radius);
@@ -383,4 +383,27 @@ body, html {
         flex-direction: column;
         align-items: flex-start;
     }
+}
+.open-preview {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.open-preview img.open-img {
+    width: 32px;
+    height: 32px;
+    object-fit: contain;
+    background-color: #fff;
+    border-radius: 6px;
+    box-shadow: var(--box-shadow);
+    padding: 3px;
+}
+
+.open-preview img.center {
+    background-color: #ff9800;
 }
