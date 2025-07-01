@@ -2,45 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Mods Hub</title>
-    <meta name="description" content="Download the best mods for GTA V, Minecraft, and more. Regularly updated with new content.">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Game Mods Hub",
-        "url": "https://yourdomain.com",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://yourdomain.com/?q={search_term_string}",
-            "query-input": "required name=search_term_string"
-        },
-        "description": "Download the best mods for GTA V, Minecraft, and more."
-    }
-    </script>
 </head>
 <body>
     <noscript>
         <div class="error">
-            <h2>JavaScript is required for this website to function properly.</h2>
-            <p>Please enable JavaScript in your browser settings or use a JavaScript-enabled browser.</p>
+            <h2>JavaScript is required for this website.</h2>
+            <p>Please enable JavaScript in your browser.</p>
         </div>
     </noscript>
 
     <header class="main-header">
-        <h1 id="site-title">Game Mods Hub</h1>
-        <p id="site-description">Premium mods for your favorite games</p>
+        <h1>Game Mods Hub</h1>
+        <p>Premium mods for your favorite games</p>
     </header>
 
     <div class="search-container">
         <div class="search-box">
-            <input type="search" id="search" placeholder="Search for mods..." aria-label="Search for mods">
+            <input type="search" id="search" placeholder="Search for mods...">
         </div>
         <div class="filters">
             <button class="filter-btn active" data-game="all">All</button>
@@ -53,31 +35,30 @@
 
     <section class="mods-list" id="mods-list">
         <div id="loading-message" class="loading-message" style="display: none;">
-            <p>Loading mods, please wait...</p>
+            <p>Loading mods...</p>
         </div>
-        <p id="no-mods-message" style="display: none;">
-            No mods found for "<span id="search-query"></span>". Try a different search or check back later.
-        </p>
+        <p id="no-mods-message" style="display: none;">No mods found.</p>
         <div id="security-warning" class="security-warning">
-            <strong>Security Notice:</strong> Only download mods from trusted sources. We scan all files but recommend using antivirus software.
+            <strong>Security Notice:</strong> Download mods from trusted sources.
+            <span id="close-warning" style="float: right; cursor: pointer;">✖</span>
         </div>
     </section>
 
     <div class="pagination">
-        <button id="prev" aria-label="Previous page">Previous</button>
+        <button id="prev">Previous</button>
         <div class="page-numbers" id="page-numbers"></div>
-        <button id="next" aria-label="Next page">Next</button>
+        <button id="next">Next</button>
     </div>
 
     <footer class="footer">
-    <p>&copy; 2025 Game Mods Hub. All rights reserved.</p>
-    <p class="footer-links">
-        <a href="/privacy">Privacy Policy</a> | 
-        <a href="/terms">Terms of Service</a> | 
-        <a href="/contact">Contact Us</a>
-    </p>
-</footer>
+        <p>&copy; 2025 Game Mods Hub.</p>
+        <div class="footer-links">
+            <a href="/privacy">Privacy</a>
+            <a href="/terms">Terms</a>
+            <a href="/contact">Contact</a>
+        </div>
+    </footer>
 
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
 </body>
 </html>

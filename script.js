@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let searchQuery = '';
     let currentFilter = 'all';
     let modsData = [];
-    let isLoading = false;
     let controller;
 
     const modsList = document.getElementById('mods-list');
@@ -17,7 +16,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const loadingMessage = document.getElementById('loading-message');
     const loadingIndicator = document.querySelector('.loading-indicator');
     const securityWarning = document.getElementById('security-warning');
-    
+
+    document.getElementById('close-warning').addEventListener('click', () => {
+        securityWarning.style.display = 'none';
+    });
+
+    setTimeout(() => {
+        securityWarning.style.display = 'none';
+    }, 5000);
+
     init();
 
     function init() {
@@ -41,10 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 updatePagination();
             });
         });
-
-        securityWarning.addEventListener('click', () => {
-            securityWarning.style.display = 'none';
-        });
     }
 
     function debounce(func, wait) {
@@ -60,17 +63,13 @@ document.addEventListener('DOMContentLoaded', function () {
             if (controller) controller.abort();
             controller = new AbortController();
             
-            isLoading = true;
             loadingIndicator.style.display = 'block';
             loadingMessage.style.display = 'block';
             modsList.style.display = 'none';
             noModsMessage.style.display = 'none';
             
             const response = await fetch('mods.json', { 
-                signal: controller.signal,
-                headers: {
-                    'Cache-Control': 'max-age=3600'
-                }
+                signal: controller.signal
             });
             
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -78,34 +77,24 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await response.json();
             
             modsData = data.map(mod => {
-                if (!mod.id) {
-                    mod.id = generateId(mod.title);
-                }
-                
-                if (!mod.title) {
-                    mod.title = 'Untitled Mod';
-                }
-                
-                if (mod.lastUpdated) {
-                    mod.lastUpdated = formatDate(mod.lastUpdated);
-                }
-                
+                if (!mod.id) mod.id = generateId(mod.title);
+                if (!mod.title) mod.title = 'Untitled Mod';
+                if (mod.lastUpdated) mod.lastUpdated = formatDate(mod.lastUpdated);
                 return mod;
             });
 
             if (modsData.length === 0) {
-                showNoModsMessage('No mods available. Please check back later.');
+                showNoModsMessage('No mods available.');
             } else {
                 renderMods();
                 updatePagination();
             }
         } catch (error) {
             if (error.name !== 'AbortError') {
-                showError('Failed to load mods. Please try again later.');
+                showError('Failed to load mods.');
                 console.error('Fetch error:', error);
             }
         } finally {
-            isLoading = false;
             loadingIndicator.style.display = 'none';
             loadingMessage.style.display = 'none';
             modsList.style.display = 'flex';
@@ -113,15 +102,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function generateId(title) {
-        return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + 
-               '-' + Math.random().toString(36).substr(2, 9);
+        return title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') + '-' + Math.random().toString(36).substr(2, 9);
     }
 
     function formatDate(dateString) {
         try {
             const date = new Date(dateString);
             if (isNaN(date.getTime())) return dateString;
-            
             return date.toLocaleDateString('en-US', {
                 year: 'numeric',
                 month: 'short',
@@ -134,16 +121,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function showError(message) {
         modsList.innerHTML = '';
-        
         const errorElement = document.createElement('div');
         errorElement.className = 'error';
         errorElement.innerHTML = `<p>${message}</p>`;
-        
         const retryBtn = document.createElement('button');
         retryBtn.className = 'download-btn';
         retryBtn.textContent = 'Retry';
         retryBtn.addEventListener('click', fetchModsData);
-        
         errorElement.appendChild(retryBtn);
         modsList.appendChild(errorElement);
     }
@@ -157,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function searchMods() {
         const query = searchInput.value.trim();
         if (query.length < 2 && query.length > 0) return;
-        
         searchQuery = query.toLowerCase();
         currentPage = 1;
         renderMods();
@@ -169,10 +152,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const filteredMods = filterMods();
 
         if (filteredMods.length === 0) {
-            document.getElementById('search-query').textContent = searchQuery;
-            showNoModsMessage(searchQuery ? 
-                `No mods found for "${searchQuery}". Try a different search.` : 
-                'No mods match the current filters.');
+            showNoModsMessage(searchQuery ? `No mods found for "${searchQuery}".` : 'No mods match the current filters.');
             return;
         } else {
             noModsMessage.style.display = 'none';
@@ -187,19 +167,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function filterMods() {
         let filtered = [...modsData];
-
         if (currentFilter !== 'all') {
-            filtered = filtered.filter(mod => 
-                mod.game && mod.game.toLowerCase() === currentFilter.toLowerCase()
-            );
+            filtered = filtered.filter(mod => mod.game && mod.game.toLowerCase() === currentFilter.toLowerCase());
         }
-        
         if (searchQuery) {
-            filtered = filtered.filter(mod => {
-                return mod.title && mod.title.toLowerCase().includes(searchQuery);
-            });
+            filtered = filtered.filter(mod => mod.title && mod.title.toLowerCase().includes(searchQuery));
         }
-        
         return filtered;
     }
 
@@ -220,9 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
         modElement.classList.add('mod-item');
         modElement.dataset.id = mod.id;
 
-        const stars = Array(5).fill(0).map((_, i) => 
-            i < Math.floor(rating) ? '★' : '☆'
-        ).join('');
+        const stars = Array(5).fill(0).map((_, i) => i < Math.floor(rating) ? '★' : '☆').join('');
 
         modElement.innerHTML = `
             <div class="mod-header">
@@ -230,9 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <h2>${mod.title || 'Untitled Mod'}</h2>
                     ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
                 </div>
-                <div class="rating" aria-label="Rating: ${rating} out of 5">
-                    ${stars}
-                </div>
+                <div class="rating">${stars}</div>
             </div>
             
             ${hasImages ? `
@@ -245,11 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="version-select">
                 <label for="version-${mod.id}">Select Version:</label>
                 <select id="version-${mod.id}">
-                    ${versionKeys.map(version => 
-                        `<option value="${validateUrl(versions[version]) || '#'}">
-                            ${version} ${mod.fileSize ? `(${mod.fileSize})` : ''}
-                        </option>`
-                    ).join('')}
+                    ${versionKeys.map(version => `<option value="${validateUrl(versions[version]) || '#'}">${version} ${mod.fileSize ? `(${mod.fileSize})` : ''}</option>`).join('')}
                 </select>
             </div>` : '<p class="no-versions">No versions available</p>'}
             
@@ -259,8 +224,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             
             <a href="${hasVersions ? validateUrl(versions[versionKeys[0]]) || '#' : '#'}" 
-               class="download-btn ${!hasVersions ? 'disabled-link' : ''}"
-               aria-label="Download ${mod.title || 'mod'}">
+               class="download-btn ${!hasVersions ? 'disabled-link' : ''}">
                 ${hasVersions ? "Download Now" : "Link unavailable"}
             </a>
         `;
@@ -317,9 +281,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const pageBtn = document.createElement('button');
                 pageBtn.textContent = page;
                 pageBtn.classList.add('page-btn');
-                if (page === currentPage) {
-                    pageBtn.classList.add('active');
-                }
+                if (page === currentPage) pageBtn.classList.add('active');
                 pageBtn.addEventListener('click', () => {
                     currentPage = page;
                     renderMods();
@@ -327,7 +289,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
                 pageNumbersContainer.appendChild(pageBtn);
-                
                 prevPage = page;
             });
 

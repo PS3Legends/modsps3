@@ -1,4 +1,3 @@
-/* حذفت أنماط أزرار المشاركة ووصف المود */
 :root {
     --primary-color: #ff7b00;
     --primary-dark: #ff4500;
@@ -20,7 +19,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Roboto', 'Arial', sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
 body, html {
@@ -69,12 +68,6 @@ body, html {
 .main-header h1 {
     font-size: clamp(1.8rem, 5vw, 3rem);
     margin-bottom: 20px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.main-header p {
-    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
-    opacity: 0.9;
 }
 
 .search-container {
@@ -112,14 +105,6 @@ body, html {
     color: var(--text-light);
 }
 
-.search-box input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-}
-
-.search-box input:focus {
-    outline: none;
-}
-
 .filters {
     display: flex;
     gap: 10px;
@@ -135,12 +120,6 @@ body, html {
     color: #333;
     cursor: pointer;
     transition: var(--transition);
-    font-weight: 500;
-}
-
-.filter-btn:focus {
-    outline: 2px solid var(--primary-color);
-    outline-offset: 2px;
 }
 
 .filter-btn.active, .filter-btn:hover {
@@ -166,13 +145,11 @@ body, html {
     padding: 25px;
     border-radius: 15px;
     box-shadow: var(--box-shadow);
-    transition: transform 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
-    will-change: transform, box-shadow;
+    transition: transform 0.4s ease-in-out;
 }
 
 .mod-item:hover {
     transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 .mod-header {
@@ -197,13 +174,6 @@ body, html {
     gap: 2px;
 }
 
-.mod-name {
-    font-size: 1.2rem;
-    color: var(--text-muted);
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
 .mod-images {
     display: flex;
     gap: 15px;
@@ -219,7 +189,6 @@ body, html {
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     transition: transform 0.3s ease;
-    background-color: #f0f0f0;
 }
 
 .mod-images img:hover {
@@ -234,11 +203,6 @@ body, html {
     flex-wrap: wrap;
 }
 
-.version-select label {
-    font-size: 1.1rem;
-    color: var(--text-light);
-}
-
 .version-select select {
     padding: 10px 20px;
     font-size: 1rem;
@@ -247,12 +211,6 @@ body, html {
     background-color: #fff;
     cursor: pointer;
     min-width: 200px;
-    transition: var(--transition);
-}
-
-.version-select select:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 123, 0, 0.3);
 }
 
 .download-btn {
@@ -272,15 +230,8 @@ body, html {
     cursor: pointer;
 }
 
-.download-btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(255, 123, 0, 0.5);
-}
-
 .download-btn:hover:not(.disabled-link) {
-    background: linear-gradient(135deg, var(--primary-color), #ff0055);
     transform: translateY(-5px);
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
 }
 
 .download-btn.disabled-link {
@@ -300,19 +251,12 @@ body, html {
     gap: 10px;
 }
 
-.no-versions {
-    color: var(--warning-color);
-    font-weight: bold;
-    margin: 15px 0;
-}
-
 .pagination {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 15px;
     margin: 30px 0;
-    padding: 15px 0;
 }
 
 .pagination button {
@@ -323,23 +267,6 @@ body, html {
     cursor: pointer;
     font-size: 1rem;
     border-radius: var(--border-radius);
-    transition: var(--transition);
-}
-
-.pagination button:focus {
-    outline: 2px solid var(--success-color);
-    outline-offset: 2px;
-}
-
-.pagination button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    background: #9e9e9e;
-}
-
-.pagination button:hover:not(:disabled) {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 10px rgba(0,0,0,0.2);
 }
 
 .page-numbers {
@@ -357,108 +284,19 @@ body, html {
     border: 2px solid var(--success-color);
     cursor: pointer;
     border-radius: var(--border-radius);
-    transition: var(--transition);
-    font-weight: bold;
-}
-
-.page-numbers button:focus {
-    outline: 2px solid var(--primary-color);
 }
 
 .page-numbers button.active {
     background: linear-gradient(135deg, var(--primary-color), #ff5722);
     color: var(--text-light);
-    border-color: var(--primary-color);
 }
 
-.page-numbers button:hover {
-    background: linear-gradient(135deg, var(--primary-color), #ff5722);
-    color: var(--text-light);
-}
-
-.loading-indicator {
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-    margin: 40px auto;
-    display: none;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-#no-mods-message {
-    font-size: 1.3rem;
-    margin: 30px 0;
-    padding: 20px;
-    background-color: #fff3e0;
-    border-radius: 10px;
-    border-left: 5px solid var(--warning-color);
-    text-align: center;
-    width: 100%;
-    max-width: 800px;
-}
-
-@media (max-width: 768px) {
-    .main-header {
-        padding: 40px 15px;
-    }
-    
-    .mod-item {
-        padding: 20px;
-    }
-    
-    .version-select {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .pagination {
-        flex-wrap: wrap;
-        gap: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    .search-box {
-        padding: 8px 12px;
-    }
-    
-    .mod-item {
-        padding: 15px;
-    }
-    
-    .download-btn {
-        padding: 12px 25px;
-        font-size: 1rem;
-    }
-}
 .footer {
     background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
     color: var(--text-light);
     text-align: center;
     padding: 20px;
-    font-size: 1rem;
     margin-top: 40px;
-}
-
-.footer-links a {
-    color: var(--text-light);
-    text-decoration: none;
-    transition: var(--transition);
-    padding: 5px 10px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.footer-links a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
 }
 
 .footer-links {
@@ -467,4 +305,31 @@ body, html {
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: var(--text-light);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    .main-header {
+        padding: 40px 15px;
+    }
+    .mod-item {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .mod-images img {
+        width: 100%;
+        height: auto;
+    }
+    .download-btn {
+        width: 100%;
+    }
 }
