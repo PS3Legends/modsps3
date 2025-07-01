@@ -2,6 +2,7 @@
   {
     "title": "GTA V Real Life Mod",
     "nameMod": "Real Life",
+    "game": "GTA",
     "description": "Adds real-life features to GTA V including realistic physics, weather, and AI behaviors.",
     "modImage1": "icons-buttons/R1.png",
     "modImage2": "icons-buttons/L2.png",
@@ -12,11 +13,13 @@
     "rating": 4.5,
     "downloadCount": 12500,
     "lastUpdated": "2025-05-15",
-    "fileSize": "45MB"
+    "fileSize": "45MB",
+    "author": "ModDevTeam"
   },
   {
     "title": "Minecraft Ultra Shaders",
     "nameMod": "Ultra Shaders",
+    "game": "Minecraft",
     "description": "Makes Minecraft look more realistic with advanced lighting, shadows, and water effects.",
     "modImage1": "icons-buttons/R3.png",
     "modImage2": "icons-buttons/L4.png",
@@ -27,11 +30,13 @@
     "rating": 4.8,
     "downloadCount": 18700,
     "lastUpdated": "2025-06-20",
-    "fileSize": "32MB"
+    "fileSize": "32MB",
+    "author": "ShaderMaster"
   },
   {
     "title": "GTA V Zombie Apocalypse",
     "nameMod": "Zombie Mod",
+    "game": "GTA",
     "description": "Turns Los Santos into a zombie-infested wasteland with survival mechanics.",
     "modImage1": "icons-buttons/R5.png",
     "versions": {
@@ -40,11 +45,13 @@
     "rating": 4.2,
     "downloadCount": 8900,
     "lastUpdated": "2025-04-10",
-    "fileSize": "28MB"
+    "fileSize": "28MB",
+    "author": "ZombieLabs"
   },
   {
     "title": "Minecraft Fantasy RPG",
     "nameMod": "RPG Expansion",
+    "game": "Minecraft",
     "description": "Adds RPG elements to Minecraft including quests, skills, and new fantasy mobs.",
     "modImage1": "icons-buttons/R7.png",
     "modImage2": "icons-buttons/L8.png",
@@ -55,6 +62,7 @@
     "rating": 4.7,
     "downloadCount": 15400,
     "lastUpdated": "2025-06-05",
-    "fileSize": "65MB"
+    "fileSize": "65MB",
+    "author": "FantasyMods"
   }
 ]

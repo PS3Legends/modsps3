@@ -6,6 +6,11 @@
     <title>Game Mods Hub</title>
     <meta name="description" content="Download the best mods for GTA V, Minecraft, and more. Regularly updated with new content.">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta property="og:title" content="Game Mods Hub">
+    <meta property="og:description" content="Download the best mods for GTA V, Minecraft, and more.">
+    <meta property="og:image" content="https://yourusername.github.io/icons-buttons/plus.png">
+    <meta property="og:url" content="https://yourusername.github.io">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -41,7 +46,11 @@
         </div>
     </div>
 
-    <section class="mods-list" id="mods-list">
+    <div id="loading-message" style="display: none;">
+        Loading mods, please wait...
+    </div>
+
+    <section class="mods-list" id="mods-list" aria-live="polite">
         <p id="no-mods-message" style="display: none;">
             No mods found for "<span id="search-query"></span>". Try a different search or check back later.
         </p>

@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const pageNumbersContainer = document.getElementById('page-numbers');
     const noModsMessage = document.getElementById('no-mods-message');
     const filterButtons = document.querySelectorAll('.filter-btn');
+    const loadingMessage = document.getElementById('loading-message');
     
     const loadingIndicator = document.createElement('div');
     loadingIndicator.className = 'loading-indicator';
@@ -59,6 +60,8 @@ document.addEventListener('DOMContentLoaded', function () {
             
             isLoading = true;
             loadingIndicator.style.display = 'block';
+            loadingMessage.style.display = 'block';
+            modsList.style.display = 'none';
             
             const response = await fetch('mods.json', { 
                 signal: controller.signal,
@@ -101,17 +104,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 modsData = JSON.parse(cachedData);
                 renderMods();
                 updatePagination();
-                console.log('Loaded mods from cache');
             }
             
             if (error.name !== 'AbortError') {
-                console.error('Error loading mods data:', error);
-                showNoModsMessage('Failed to load mods. Showing cached data if available.');
+                showError('Failed to load mods. Showing cached data if available.');
             }
         } finally {
             isLoading = false;
             loadingIndicator.style.display = 'none';
+            loadingMessage.style.display = 'none';
+            modsList.style.display = 'flex';
         }
+    }
+
+    function showError(message) {
+        const errorElement = document.createElement('div');
+        errorElement.className = 'error-message';
+        errorElement.innerHTML = `<span>${message}</span>`;
+        
+        const retryBtn = document.createElement('button');
+        retryBtn.className = 'retry-btn';
+        retryBtn.textContent = 'Retry';
+        retryBtn.addEventListener('click', fetchModsData);
+        
+        errorElement.appendChild(retryBtn);
+        modsList.innerHTML = '';
+        modsList.appendChild(errorElement);
     }
 
     function showNoModsMessage(message) {
@@ -151,16 +169,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (currentFilter !== 'all') {
             filtered = filtered.filter(mod => 
-                mod.title.toLowerCase().includes(currentFilter.toLowerCase()) ||
-                (mod.description && mod.description.toLowerCase().includes(currentFilter.toLowerCase()))
+                mod.game && mod.game.toLowerCase() === currentFilter.toLowerCase()
+            );
         }
         
         if (searchQuery) {
             filtered = filtered.filter(mod => {
-                const titleMatch = mod.title.toLowerCase().includes(searchQuery);
-                const nameMatch = mod.nameMod && mod.nameMod.toLowerCase().includes(searchQuery);
-                const descMatch = mod.description && mod.description.toLowerCase().includes(searchQuery);
-                return titleMatch || nameMatch || descMatch;
+                const searchFields = [
+                    mod.title,
+                    mod.nameMod,
+                    mod.description,
+                    mod.author
+                ].filter(Boolean);
+                
+                return searchFields.some(field => 
+                    field.toLowerCase().includes(searchQuery)
+                );
             });
         }
         
@@ -180,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const hasImages = mod.modImage1 || mod.modImage2;
 
         const modElement = document.createElement('div');
-        modElement.classList.add('mod-item');
+        modElement.classList.add('mod-item', 'fade-in');
         modElement.dataset.id = mod.id;
 
         modElement.innerHTML = `
@@ -190,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>
             ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
             ${mod.description ? `<p class="mod-desc">${mod.description}</p>` : ''}
+            ${mod.author ? `<p class="mod-author">Author: ${mod.author}</p>` : ''}
             
             ${hasImages ? `
             <div class="mod-images">
