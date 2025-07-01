@@ -127,16 +127,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="mod-info">
                     <h3 class="game-name">${mod.game || 'Unknown Game'}</h3>
                     <h2 class="mod-title">${escapeHtml(mod.title || 'Untitled Mod')}</h2>
-                    <div class="open-preview">
-                        ${mod.openImageLeft ? `<img src="${mod.openImageLeft}" class="open-img left">` : ''}
-                        <img src="icons-buttons/plus.png" class="open-img center">
-                        ${mod.openImageRight ? `<img src="${mod.openImageRight}" class="open-img right">` : ''}
+                    <div class="open-preview-wrapper">
+                        <span class="open-label">Open:</span>
+                        <div class="open-preview">
+                            ${mod.modImage1 ? `<img src="${mod.modImage1}" class="open-img left">` : ''}
+                            <img src="icons-buttons/plus.png" class="open-img center">
+                            ${mod.modImage2 ? `<img src="${mod.modImage2}" class="open-img right">` : ''}
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="mod-images">
-                ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="Mod preview">` : ''}
-                ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="Mod preview">` : ''}
+                ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="">` : ''}
+                ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="">` : ''}
             </div>
             ${hasVersions ? `
             <div class="version-select">

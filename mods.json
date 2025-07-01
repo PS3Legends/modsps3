@@ -3,8 +3,6 @@
     "id": "gta-v-real-life-mod",
     "title": "GTA V Real Life Mod",
     "game": "GTA",
-    "openImageLeft": "icons-buttons/left1.png",
-    "openImageRight": "icons-buttons/right1.png",
     "modImage1": "previews/mod1-1.jpg",
     "modImage2": "previews/mod1-2.jpg",
     "versions": {
@@ -18,8 +16,6 @@
     "id": "minecraft-shaders",
     "title": "Minecraft Ultra Shaders",
     "game": "Minecraft",
-    "openImageLeft": "icons-buttons/left2.png",
-    "openImageRight": "icons-buttons/right2.png",
     "modImage1": "previews/mc-shader1.jpg",
     "versions": {
       "v1.2": "downloads/mc-shader.zip"
