@@ -2,52 +2,66 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Game Mods Hub</title>
+    <meta name="description" content="Download the best mods for GTA V, Minecraft, and more. Regularly updated with new content.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Game Mods Hub",
+        "url": "https://yourdomain.com",
+        "description": "Download the best mods for GTA V, Minecraft, and more."
+    }
+    </script>
 </head>
 <body>
+    <noscript>
+        <div class="error">JavaScript is required for this website to function properly.</div>
+    </noscript>
+
     <header class="main-header">
         <h1 id="site-title">Game Mods Hub</h1>
+        <p id="site-description">Premium mods for your favorite games</p>
     </header>
 
     <div class="search-container">
         <div class="search-box">
-            <input type="search" id="search" placeholder="Search for mods...">
-            <svg class="search-icon" viewBox="0 0 24 24">
-                <path d="M15.5 14h-.79l-.28-.27a6.5 6.5 0 0 0 1.48-5.34c-.47-2.78-2.79-5-5.59-5.34a6.505 6.505 0 0 0-7.27 7.27c.34 2.8 2.56 5.12 5.34 5.59a6.5 6.5 0 0 0 5.34-1.48l.27.28v.79l4.25 4.25c.41.41 1.08.41 1.49 0 .41-.41.41-1.08 0-1.49L15.5 14zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-            </svg>
+            <input type="search" id="search" placeholder="Search for mods..." aria-label="Search for mods">
         </div>
         <div class="filters">
             <button class="filter-btn active" data-game="all">All</button>
             <button class="filter-btn" data-game="GTA">GTA V</button>
             <button class="filter-btn" data-game="Minecraft">Minecraft</button>
-            <button class="filter-btn" data-game="Fortnite">Fortnite</button>
-            <button class="filter-btn" data-game="AmongUs">Among Us</button>
         </div>
-    </div>
-
-    <div id="loading-message" style="display: none;">
-        Loading mods, please wait...
     </div>
 
     <section class="mods-list" id="mods-list">
         <p id="no-mods-message" style="display: none;">
-            No mods found for "<span id="search-query"></span>". Try a different search.
+            No mods found for "<span id="search-query"></span>". Try a different search or check back later.
         </p>
     </section>
 
     <div class="pagination">
-        <button id="prev">Previous</button>
+        <button id="prev" aria-label="Previous page">Previous</button>
         <div class="page-numbers" id="page-numbers"></div>
-        <button id="next">Next</button>
+        <button id="next" aria-label="Next page">Next</button>
+    </div>
+
+    <div class="share-buttons">
+        <a href="https://twitter.com/share?url=URL_HERE" class="share-btn twitter" target="_blank">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=URL_HERE" class="share-btn facebook" target="_blank">Facebook</a>
     </div>
 
     <footer class="footer">
-        <p>&copy; 2025 Game Mods Hub</p>
+        <p>&copy; 2025 Game Mods Hub. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
 </body>
 </html>
