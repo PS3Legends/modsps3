@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function () {
             isLoading = true;
             loadingIndicator.style.display = 'block';
             
-            const response = await fetch('getMods.php', { 
+            const response = await fetch('mods.json', { 
                 signal: controller.signal 
             });
             
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const firstVersionKey = versionKeys[0] || '';
         const downloadLink = versions[firstVersionKey] || "#";
         const hasImages = mod.modImage1 || mod.modImage2;
-        const imgFallback = 'icons-buttons/default-image.png';
+        const imgFallback = 'icons-buttons/plus.png';
 
         const modElement = document.createElement('div');
         modElement.classList.add('mod-item');

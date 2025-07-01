@@ -3,8 +3,8 @@
     "title": "GTA V Real Life Mod",
     "nameMod": "Real Life",
     "description": "Adds real-life features to GTA V.",
-    "modImage1": "images/gta1.jpg",
-    "modImage2": "images/gta2.jpg",
+    "modImage1": "icons-buttons/R1.png",
+    "modImage2": "icons-buttons/L2.png",
     "versions": {
       "v1.0": "https://example.com/download1.zip",
       "v2.0": "https://example.com/download2.zip"
@@ -14,7 +14,7 @@
     "title": "Minecraft Shaders",
     "nameMod": "Ultra Shaders",
     "description": "Makes the game look more realistic.",
-    "modImage1": "images/mc1.jpg",
+    "modImage1": "icons-buttons/R3",
     "versions": {
       "v1.1": "https://example.com/mcshader.zip"
     }
