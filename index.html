@@ -16,13 +16,21 @@
         "@type": "WebSite",
         "name": "Game Mods Hub",
         "url": "https://yourdomain.com",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://yourdomain.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+        },
         "description": "Download the best mods for GTA V, Minecraft, and more."
     }
     </script>
 </head>
 <body>
     <noscript>
-        <div class="error">JavaScript is required for this website to function properly.</div>
+        <div class="error">
+            <h2>JavaScript is required for this website to function properly.</h2>
+            <p>Please enable JavaScript in your browser settings or use a JavaScript-enabled browser.</p>
+        </div>
     </noscript>
 
     <header class="main-header">
@@ -38,13 +46,21 @@
             <button class="filter-btn active" data-game="all">All</button>
             <button class="filter-btn" data-game="GTA">GTA V</button>
             <button class="filter-btn" data-game="Minecraft">Minecraft</button>
+            <button class="filter-btn" data-game="Fortnite">Fortnite</button>
+            <button class="filter-btn" data-game="AmongUs">Among Us</button>
         </div>
     </div>
 
     <section class="mods-list" id="mods-list">
+        <div id="loading-message" class="loading-message" style="display: none;">
+            <p>Loading mods, please wait...</p>
+        </div>
         <p id="no-mods-message" style="display: none;">
             No mods found for "<span id="search-query"></span>". Try a different search or check back later.
         </p>
+        <div id="security-warning" class="security-warning">
+            <strong>Security Notice:</strong> Only download mods from trusted sources. We scan all files but recommend using antivirus software.
+        </div>
     </section>
 
     <div class="pagination">
@@ -54,12 +70,17 @@
     </div>
 
     <div class="share-buttons">
-        <a href="https://twitter.com/share?url=URL_HERE" class="share-btn twitter" target="_blank">Twitter</a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=URL_HERE" class="share-btn facebook" target="_blank">Facebook</a>
+        <a href="#" class="share-btn twitter" id="twitter-share" target="_blank" rel="noopener noreferrer">Twitter</a>
+        <a href="#" class="share-btn facebook" id="facebook-share" target="_blank" rel="noopener noreferrer">Facebook</a>
     </div>
 
     <footer class="footer">
         <p>&copy; 2025 Game Mods Hub. All rights reserved.</p>
+        <p class="footer-links">
+            <a href="/privacy">Privacy Policy</a> | 
+            <a href="/terms">Terms of Service</a> | 
+            <a href="/contact">Contact Us</a>
+        </p>
     </footer>
 
     <script src="script.js" defer></script>
