@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
         searchInput.addEventListener('input', debouncedSearch);
         prevBtn.addEventListener('click', goToPrevPage);
         nextBtn.addEventListener('click', goToNextPage);
-        
         filterButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 filterButtons.forEach(b => b.classList.remove('active'));
@@ -48,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function debounce(func, wait) {
         let timeout;
-        return function(...args) {
+        return function (...args) {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), wait);
         };
@@ -58,19 +57,19 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             if (controller) controller.abort();
             controller = new AbortController();
-            
+
             loadingMessage.style.display = 'flex';
             modsList.style.display = 'none';
             noModsMessage.style.display = 'none';
-            
-            const response = await fetch('mods.json', { 
+
+            const response = await fetch('mods.json', {
                 signal: controller.signal
             });
-            
+
             if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
             const data = await response.json();
-            
+
             modsData = data.map(mod => {
                 if (!mod.id) mod.id = generateId(mod.title);
                 if (!mod.title) mod.title = 'Untitled Mod';
@@ -79,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             updateFilterCounts();
-            
+
             if (modsData.length === 0) {
                 showNoModsMessage('No mods available.');
             } else {
@@ -213,13 +212,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
                 <div class="rating">${stars}</div>
             </div>
-            
             ${hasImages ? `
             <div class="mod-images">
                 ${mod.modImage1 ? `<img src="${escapeHtml(mod.modImage1)}" alt="${escapeHtml(mod.title || 'Mod')} preview" onerror="this.src='${imgFallback}'">` : ''}
                 ${mod.modImage2 ? `<img src="${escapeHtml(mod.modImage2)}" alt="${escapeHtml(mod.title || 'Mod')} preview" onerror="this.src='${imgFallback}'">` : ''}
             </div>` : ''}
-            
             ${hasVersions ? `
             <div class="version-select">
                 <label for="version-${mod.id}">Select Version:</label>
@@ -227,12 +224,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${versionKeys.map(version => `<option value="${escapeHtml(validateUrl(versions[version]) || '#')}">${escapeHtml(version)} ${mod.fileSize ? `(${escapeHtml(mod.fileSize)})` : ''}</option>`).join('')}
                 </select>
             </div>` : '<p class="no-versions">Coming soon</p>'}
-            
             <div class="mod-footer">
                 ${mod.author ? `<small><span>Author:</span> ${escapeHtml(mod.author)}</small>` : '<small>Author: Unknown</small>'}
                 ${mod.lastUpdated ? `<small><span>Updated:</span> ${escapeHtml(mod.lastUpdated)}</small>` : ''}
             </div>
-            
             <a href="${hasVersions ? escapeHtml(validateUrl(versions[versionKeys[0]]) || '#') : '#'}" 
                class="download-btn ${!hasVersions ? 'disabled-link' : ''}">
                 ${hasVersions ? "Download Now" : "Coming soon"}
@@ -241,7 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const select = modElement.querySelector('select');
         if (select) {
-            select.addEventListener('change', function() {
+            select.addEventListener('change', function () {
                 const downloadBtn = modElement.querySelector('.download-btn');
                 const url = validateUrl(this.value);
                 downloadBtn.href = url || '#';
@@ -283,9 +278,9 @@ document.addEventListener('DOMContentLoaded', function () {
             nextBtn.disabled = true;
             return;
         }
-        
+
         const pagesToShow = new Set([1, currentPage - 1, currentPage, currentPage + 1, totalPages]);
-        
+
         let prevPage = 0;
         Array.from(pagesToShow)
             .sort((a, b) => a - b)
@@ -297,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     ellipsis.style.padding = '0 5px';
                     pageNumbersContainer.appendChild(ellipsis);
                 }
-                
+
                 const pageBtn = document.createElement('button');
                 pageBtn.textContent = page;
                 pageBtn.classList.add('page-btn');
