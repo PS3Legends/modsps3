@@ -20,12 +20,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const facebookShareBtn = document.getElementById('facebook-share');
     const securityWarning = document.getElementById('security-warning');
     
-    // Set share URLs
     const currentUrl = encodeURIComponent(window.location.href);
     twitterShareBtn.href = `https://twitter.com/share?url=${currentUrl}&text=Check%20out%20these%20awesome%20game%20mods!`;
     facebookShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
 
-    // Initialize the app
     init();
 
     function init() {
@@ -50,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Close security warning
         securityWarning.addEventListener('click', () => {
             securityWarning.style.display = 'none';
         });
@@ -86,19 +83,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const data = await response.json();
             
-            // Validate and process mods data
             modsData = data.map(mod => {
-                // Add unique ID if not present
                 if (!mod.id) {
                     mod.id = generateId(mod.title);
                 }
                 
-                // Validate required fields
                 if (!mod.title) {
                     mod.title = 'Untitled Mod';
                 }
                 
-                // Format lastUpdated if exists
                 if (mod.lastUpdated) {
                     mod.lastUpdated = formatDate(mod.lastUpdated);
                 }
@@ -209,16 +202,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         if (searchQuery) {
             filtered = filtered.filter(mod => {
-                const searchFields = [
-                    mod.title,
-                    mod.nameMod,
-                    mod.author,
-                    mod.description || ''
-                ].filter(Boolean);
-                
-                return searchFields.some(field => 
-                    field.toLowerCase().includes(searchQuery)
-                );
+                return mod.title && mod.title.toLowerCase().includes(searchQuery);
             });
         }
         
@@ -242,7 +226,6 @@ document.addEventListener('DOMContentLoaded', function () {
         modElement.classList.add('mod-item');
         modElement.dataset.id = mod.id;
 
-        // Create rating stars
         const stars = Array(5).fill(0).map((_, i) => 
             i < Math.floor(rating) ? '★' : '☆'
         ).join('');
