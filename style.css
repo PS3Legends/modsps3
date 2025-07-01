@@ -196,8 +196,8 @@ body, html {
 
 .mod-images img {
     width: 100%;
-    max-width: 200px;
-    height: auto;
+    max-width: 100px;
+    height: 100px;
     object-fit: contain;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
