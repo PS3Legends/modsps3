@@ -1,63 +1,30 @@
 [
   {
-    "id": "gta-v-real-life-mod-1a2b3c",
+    "id": "gta-v-real-life-mod",
     "title": "GTA V Real Life Mod",
-    "nameMod": "Real Life",
     "game": "GTA",
-    "modImage1": "icons-buttons/R1.png",
-    "modImage2": "icons-buttons/L2.png",
+    "openImageLeft": "icons-buttons/left1.png",
+    "openImageRight": "icons-buttons/right1.png",
+    "modImage1": "previews/mod1-1.jpg",
+    "modImage2": "previews/mod1-2.jpg",
     "versions": {
-      "v1.0": "https://example.com/download1.zip",
-      "v2.0": "https://example.com/download2.zip"
+      "v1.0": "downloads/gta-mod-v1.zip",
+      "v2.0": "downloads/gta-mod-v2.zip"
     },
-    "lastUpdated": "2025-05-15",
     "fileSize": "45MB",
-    "author": "ModDevTeam",
-    "rating": 4.5
+    "author": "ModDevTeam"
   },
   {
-    "id": "minecraft-ultra-shaders-4d5e6f",
+    "id": "minecraft-shaders",
     "title": "Minecraft Ultra Shaders",
-    "nameMod": "Ultra Shaders",
     "game": "Minecraft",
-    "modImage1": "icons-buttons/R3.png",
-    "modImage2": "icons-buttons/L4.png",
+    "openImageLeft": "icons-buttons/left2.png",
+    "openImageRight": "icons-buttons/right2.png",
+    "modImage1": "previews/mc-shader1.jpg",
     "versions": {
-      "v1.1": "https://example.com/mcshader.zip",
-      "v1.2": "https://example.com/mcshader-v2.zip"
+      "v1.2": "downloads/mc-shader.zip"
     },
-    "lastUpdated": "2025-06-20",
     "fileSize": "32MB",
-    "author": "ShaderMaster",
-    "rating": 5
-  },
-  {
-    "id": "fortnite-skin-pack-7g8h9i",
-    "title": "Fortnite Skin Pack",
-    "nameMod": "Premium Skins",
-    "game": "Fortnite",
-    "modImage1": "icons-buttons/R5.png",
-    "versions": {
-      "v3.2": "https://example.com/fortnite-skins.zip"
-    },
-    "lastUpdated": "2025-04-10",
-    "fileSize": "28MB",
-    "author": "SkinDesigner",
-    "rating": 4
-  },
-  {
-    "id": "among-us-custom-maps-0j1k2l",
-    "title": "Among Us Custom Maps",
-    "nameMod": "New Maps",
-    "game": "AmongUs",
-    "modImage1": "icons-buttons/R7.png",
-    "modImage2": "icons-buttons/L8.png",
-    "versions": {
-      "v2.5": "https://example.com/amongus-maps.zip"
-    },
-    "lastUpdated": "2025-06-05",
-    "fileSize": "15MB",
-    "author": "MapCreator",
-    "rating": 4.2
+    "author": "ShaderMaster"
   }
 ]
