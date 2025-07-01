@@ -5,7 +5,10 @@ const urlsToCache = [
   '/style.css',
   '/script.js',
   '/mods.json',
-  '/icons-buttons/plus.png'
+  '/icons-buttons/plus.png',
+  '/icons-buttons/telegram.png',
+  '/icons-buttons/youtube.png',
+  '/icons-buttons/discord.png'
 ];
 
 self.addEventListener('install', event => {

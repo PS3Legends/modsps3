@@ -20,6 +20,38 @@ document.addEventListener('DOMContentLoaded', function () {
     loadingIndicator.className = 'loading-indicator';
     document.body.appendChild(loadingIndicator);
 
+    window.addEventListener('online', updateOnlineStatus);
+    window.addEventListener('offline', updateOnlineStatus);
+    updateOnlineStatus();
+
+    function updateOnlineStatus() {
+        const statusElement = document.createElement('div');
+        statusElement.className = `online-status ${navigator.onLine ? 'online' : 'offline'}`;
+        statusElement.textContent = navigator.onLine ? 'Online' : 'Offline';
+        
+        const existingStatus = document.querySelector('.online-status');
+        if (existingStatus) {
+            existingStatus.replaceWith(statusElement);
+        } else {
+            document.body.prepend(statusElement);
+        }
+    }
+
+    function updateDateTime() {
+        const now = new Date();
+        const options = { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            weekday: 'long'
+        };
+        document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+        document.getElementById('current-time').textContent = now.toLocaleTimeString('en-US');
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+
     const debouncedSearch = debounce(searchMods, 300);
     searchInput.addEventListener('input', debouncedSearch);
     prevBtn.addEventListener('click', goToPrevPage);
@@ -213,8 +245,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 ${renderRating(mod.rating)}
             </div>
             ${mod.nameMod ? `<p class="mod-name">${mod.nameMod}</p>` : ''}
-            ${mod.description ? `<p class="mod-desc">${mod.description}</p>` : ''}
-            ${mod.author ? `<p class="mod-author">Author: ${mod.author}</p>` : ''}
             
             ${hasImages ? `
             <div class="mod-images">
@@ -236,7 +266,6 @@ document.addEventListener('DOMContentLoaded', function () {
             
             <div class="mod-footer">
                 ${mod.lastUpdated ? `<small>Updated: ${mod.lastUpdated}</small>` : ''}
-                ${mod.downloadCount ? `<small>Downloads: ${mod.downloadCount.toLocaleString()}</small>` : ''}
             </div>
             
             <a href="${hasVersions ? versions[versionKeys[0]] : '#'}" 
