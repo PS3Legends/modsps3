@@ -202,15 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
         modElement.classList.add('mod-item');
         modElement.dataset.id = mod.id;
 
-        const stars = Array(5).fill(0).map((_, i) => i < Math.floor(rating) ? '★' : '☆').join('');
-
         modElement.innerHTML = `
             <div class="mod-header">
                 <div class="mod-info">
                     <h2>${escapeHtml(mod.title || 'Untitled Mod')}</h2>
                     ${mod.nameMod ? `<p class="mod-name">${escapeHtml(mod.nameMod)}</p>` : ''}
                 </div>
-                <div class="rating">${stars}</div>
             </div>
             ${hasImages ? `
             <div class="mod-images">
@@ -226,7 +223,6 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>` : '<p class="no-versions">Coming soon</p>'}
             <div class="mod-footer">
                 ${mod.author ? `<small><span>Author:</span> ${escapeHtml(mod.author)}</small>` : '<small>Author: Unknown</small>'}
-                ${mod.lastUpdated ? `<small><span>Updated:</span> ${escapeHtml(mod.lastUpdated)}</small>` : ''}
             </div>
             <a href="${hasVersions ? escapeHtml(validateUrl(versions[versionKeys[0]]) || '#') : '#'}" 
                class="download-btn ${!hasVersions ? 'disabled-link' : ''}">

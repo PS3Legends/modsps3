@@ -186,14 +186,6 @@ body, html {
     font-size: 0.9rem;
 }
 
-.rating {
-    color: #FFD700;
-    font-size: 1.2rem;
-    white-space: nowrap;
-    display: flex;
-    gap: 2px;
-}
-
 .mod-images {
     display: flex;
     gap: 15px;
@@ -203,13 +195,14 @@ body, html {
 }
 
 .mod-images img {
-    width: 200px;
-    height: 150px;
-    object-fit: cover;
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    object-fit: contain;
     border-radius: var(--border-radius);
     box-shadow: var(--box-shadow);
     transition: transform 0.3s ease;
-    background-color: #e0e0e0;
+    background-color: transparent;
 }
 
 .mod-images img:hover {
@@ -278,12 +271,10 @@ body, html {
     gap: 10px;
 }
 
-.mod-footer small {
-    display: flex;
-    align-items: center;
-    gap: 5px;
+.mod-footer small span:contains("Updated"),
+.mod-footer small:has(span:contains("Updated")) {
+    display: none !important;
 }
-
 .pagination {
     display: flex;
     justify-content: center;
