@@ -16,14 +16,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterButtons = document.querySelectorAll('.filter-btn');
     const loadingMessage = document.getElementById('loading-message');
     const loadingIndicator = document.querySelector('.loading-indicator');
-    const twitterShareBtn = document.getElementById('twitter-share');
-    const facebookShareBtn = document.getElementById('facebook-share');
     const securityWarning = document.getElementById('security-warning');
     
-    const currentUrl = encodeURIComponent(window.location.href);
-    twitterShareBtn.href = `https://twitter.com/share?url=${currentUrl}&text=Check%20out%20these%20awesome%20game%20mods!`;
-    facebookShareBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${currentUrl}`;
-
     init();
 
     function init() {
@@ -240,8 +234,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     ${stars}
                 </div>
             </div>
-            
-            ${mod.description ? `<p class="mod-desc">${mod.description}</p>` : ''}
             
             ${hasImages ? `
             <div class="mod-images">

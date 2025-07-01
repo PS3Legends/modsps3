@@ -203,13 +203,6 @@ body, html {
     font-weight: bold;
 }
 
-.mod-desc {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    margin-bottom: 15px;
-    line-height: 1.5;
-}
-
 .mod-images {
     display: flex;
     gap: 15px;
@@ -382,73 +375,6 @@ body, html {
     color: var(--text-light);
 }
 
-.share-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.share-btn {
-    padding: 10px 20px;
-    border-radius: 5px;
-    color: var(--text-light);
-    text-decoration: none;
-    font-weight: bold;
-    transition: var(--transition);
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.share-btn:focus {
-    outline: 2px solid currentColor;
-    outline-offset: 2px;
-}
-
-.share-btn.twitter {
-    background-color: #1DA1F2;
-}
-
-.share-btn.facebook {
-    background-color: #4267B2;
-}
-
-.share-btn:hover {
-    transform: translateY(-3px);
-    opacity: 0.9;
-}
-
-.footer {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: var(--text-light);
-    text-align: center;
-    padding: 20px;
-    font-size: 1rem;
-    margin-top: 40px;
-}
-
-.footer-links a {
-    color: var(--text-light);
-    text-decoration: none;
-    transition: var(--transition);
-    padding: 5px 10px;
-    border-radius: 4px;
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.footer-links a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-}
-
-.footer-links {
-    margin-top: 15px;
-    display: flex;
-    gap: 15px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
 .loading-indicator {
     border: 5px solid #f3f3f3;
     border-top: 5px solid #3498db;
@@ -509,10 +435,5 @@ body, html {
     .download-btn {
         padding: 12px 25px;
         font-size: 1rem;
-    }
-    
-    .share-buttons {
-        flex-direction: column;
-        align-items: center;
     }
 }

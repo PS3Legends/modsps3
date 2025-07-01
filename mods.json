@@ -4,7 +4,6 @@
     "title": "GTA V Real Life Mod",
     "nameMod": "Real Life",
     "game": "GTA",
-    "description": "Transform GTA V into a realistic life simulator with enhanced graphics, realistic physics, and daily life activities.",
     "modImage1": "icons-buttons/R1.png",
     "modImage2": "icons-buttons/L2.png",
     "versions": {
@@ -21,7 +20,6 @@
     "title": "Minecraft Ultra Shaders",
     "nameMod": "Ultra Shaders",
     "game": "Minecraft",
-    "description": "Enhance your Minecraft experience with stunning visual effects, realistic lighting, and beautiful water reflections.",
     "modImage1": "icons-buttons/R3.png",
     "modImage2": "icons-buttons/L4.png",
     "versions": {
@@ -38,7 +36,6 @@
     "title": "Fortnite Skin Pack",
     "nameMod": "Premium Skins",
     "game": "Fortnite",
-    "description": "Exclusive collection of high-quality skins for Fortnite characters with unique designs and animations.",
     "modImage1": "icons-buttons/R5.png",
     "versions": {
       "v3.2": "https://example.com/fortnite-skins.zip"
@@ -53,7 +50,6 @@
     "title": "Among Us Custom Maps",
     "nameMod": "New Maps",
     "game": "AmongUs",
-    "description": "Expand your Among Us gameplay with brand new custom maps featuring unique tasks and hiding spots.",
     "modImage1": "icons-buttons/R7.png",
     "modImage2": "icons-buttons/L8.png",
     "versions": {
