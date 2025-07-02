@@ -1,224 +1,207 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const itemsPerPage = 6;
-    
-    let currentPage = 1;
-    let searchQuery = '';
-    let currentFilter = 'all';
-    let modsData = [];
+  const itemsPerPage = 6;
+  let currentPage = 1;
+  let searchQuery = '';
+  let modsData = [];
 
-    const modsList = document.getElementById('mods-list');
-    const searchInput = document.getElementById('search');
-    const prevBtn = document.getElementById('prev');
-    const nextBtn = document.getElementById('next');
-    const pageNumbersContainer = document.getElementById('page-numbers');
-    const noModsMessage = document.getElementById('no-mods-message');
-    const filterButtons = document.querySelectorAll('.filter-btn');
-    const loadingMessage = document.getElementById('loading-message');
+  const modsList = document.getElementById('mods-list');
+  const searchInput = document.getElementById('search');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  const pageNumbersContainer = document.getElementById('page-numbers');
+  const noModsMessage = document.getElementById('no-mods-message');
+  const loadingMessage = document.getElementById('loading-message');
+  const darkModeToggle = document.getElementById('darkModeToggle');
 
-    fetchModsData();
-    setupEventListeners();
+  const resultsCount = document.createElement('p');
+  resultsCount.id = 'results-count';
+  resultsCount.style.textAlign = 'center';
+  resultsCount.style.marginTop = '10px';
+  resultsCount.style.fontWeight = 'bold';
+  modsList.parentNode.insertBefore(resultsCount, modsList);
 
-    function setupEventListeners() {
-        searchInput.addEventListener('input', debounce(searchMods, 300));
-        prevBtn.addEventListener('click', goToPrevPage);
-        nextBtn.addEventListener('click', goToNextPage);
-        
-        filterButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                filterButtons.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                currentFilter = btn.dataset.game;
-                currentPage = 1;
-                renderMods();
-                updatePagination();
-            });
-        });
+  if (localStorage.getItem('darkMode') === 'enabled') {
+    document.body.classList.add('dark-mode');
+  }
+
+  darkModeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    if (document.body.classList.contains('dark-mode')) {
+      localStorage.setItem('darkMode', 'enabled');
+    } else {
+      localStorage.removeItem('darkMode');
+    }
+  });
+
+  fetchModsData();
+  searchInput.addEventListener('input', debounce(searchMods, 300));
+  prevBtn.addEventListener('click', goToPrevPage);
+  nextBtn.addEventListener('click', goToNextPage);
+
+  function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+  }
+
+  async function fetchModsData() {
+    try {
+      loadingMessage.style.display = 'flex';
+      noModsMessage.style.display = 'none';
+      const response = await fetch('mods.json');
+      if (!response.ok) throw new Error('Failed to load mods');
+      modsData = await response.json();
+      renderMods();
+      updatePagination();
+    } catch (error) {
+      showError('Failed to load mods. Please try again later.');
+    } finally {
+      loadingMessage.style.display = 'none';
+    }
+  }
+
+  function searchMods() {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    currentPage = 1;
+    renderMods();
+    updatePagination();
+  }
+
+  function filterMods() {
+    if (!searchQuery) return modsData;
+    return modsData.filter(mod => mod.game && mod.game.toLowerCase().includes(searchQuery));
+  }
+
+  function renderMods() {
+    const filteredMods = filterMods();
+    modsList.innerHTML = '';
+
+    if (filteredMods.length === 0) {
+      noModsMessage.textContent = 'No mods found.';
+      noModsMessage.style.display = 'block';
+      resultsCount.textContent = '';
+      return;
     }
 
-    function debounce(func, wait) {
-        let timeout;
-        return function (...args) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func.apply(this, args), wait);
-        };
+    noModsMessage.style.display = 'none';
+    resultsCount.textContent = `Showing ${Math.min(itemsPerPage, filteredMods.length - (currentPage - 1) * itemsPerPage)} of ${filteredMods.length} mods`;
+
+    paginateMods(filteredMods).forEach(mod => {
+      modsList.appendChild(createModElement(mod));
+    });
+  }
+
+  function paginateMods(mods) {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    return mods.slice(startIndex, startIndex + itemsPerPage);
+  }
+
+  function createModElement(mod) {
+    const versions = mod.versions || {};
+    const versionKeys = Object.keys(versions);
+    const hasVersions = versionKeys.length > 0 && versionKeys.some(v => versions[v]);
+    const hasAnyPreview = mod.modImage1 || mod.modImage2;
+
+    const modElement = document.createElement('div');
+    modElement.classList.add('mod-item');
+
+    modElement.innerHTML = `
+      <div class="mod-header">
+        <div class="mod-info">
+          <h3 class="game-name">${mod.game || 'Unknown Game'}</h3>
+          <h2 class="mod-title">${escapeHtml(mod.title || 'Untitled Mod')}</h2>
+          ${hasAnyPreview ? `
+            <div class="open-preview-wrapper">
+              <span class="open-label">Open:</span>
+              <div class="open-preview">
+                ${mod.modImage1 ? `<img src="${mod.modImage1}" loading="lazy" class="open-img left">` : ''}
+                <img src="icons-buttons/plus.png" class="open-img center">
+                ${mod.modImage2 ? `<img src="${mod.modImage2}" loading="lazy" class="open-img right">` : ''}
+              </div>
+            </div>` : ''}
+        </div>
+      </div>
+      ${hasVersions ? `
+      <div class="version-select">
+        <select>
+          ${versionKeys.map(v => versions[v] ? `<option value="${versions[v]}">${v} ${mod.fileSize ? `(${mod.fileSize})` : ''}</option>` : '').join('')}
+        </select>
+      </div>` : '<p class="no-versions">Coming Soon</p>'}
+      <div class="mod-footer">
+        <small>Author: ${mod.author || 'Unknown'}</small>
+      </div>
+      <a href="${hasVersions && versions[versionKeys[0]] ? versions[versionKeys[0]] : '#'}" 
+        class="download-btn ${!hasVersions || !versions[versionKeys[0]] ? 'disabled-link' : ''}" 
+        ${!hasVersions || !versions[versionKeys[0]] ? 'tabindex="-1" aria-disabled="true"' : ''}>
+        ${hasVersions && versions[versionKeys[0]] ? "Download Now" : "Coming Soon"}
+      </a>
+    `;
+
+    const select = modElement.querySelector('select');
+    if (select) {
+      select.addEventListener('change', (e) => {
+        const downloadBtn = modElement.querySelector('.download-btn');
+        downloadBtn.href = e.target.value;
+      });
     }
 
-    async function fetchModsData() {
-        try {
-            loadingMessage.style.display = 'flex';
-            noModsMessage.style.display = 'none';
+    return modElement;
+  }
 
-            const response = await fetch('mods.json');
-            if (!response.ok) throw new Error('Failed to load mods');
+  function escapeHtml(text) {
+    return text ? text.toString()
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;") : '';
+  }
 
-            modsData = await response.json();
-            updateFilterCounts();
-            renderMods();
-            updatePagination();
-        } catch (error) {
-            showError('Failed to load mods. Please try again later.');
-            console.error('Fetch error:', error);
-        } finally {
-            loadingMessage.style.display = 'none';
-        }
-    }
+  function updatePagination() {
+    const filteredMods = filterMods();
+    const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
 
-    function updateFilterCounts() {
-        filterButtons.forEach(btn => {
-            if (btn.dataset.game !== 'all') {
-                const count = modsData.filter(mod => mod.game === btn.dataset.game).length;
-                btn.textContent = `${btn.textContent.split(' (')[0]} (${count})`;
-            }
-        });
-    }
+    pageNumbersContainer.innerHTML = '';
+    prevBtn.disabled = currentPage === 1;
+    nextBtn.disabled = currentPage === totalPages || totalPages === 0;
 
-    function searchMods() {
-        searchQuery = searchInput.value.trim().toLowerCase();
-        currentPage = 1;
+    if (totalPages <= 1) return;
+
+    for (let i = 1; i <= totalPages; i++) {
+      const pageBtn = document.createElement('button');
+      pageBtn.textContent = i;
+      pageBtn.classList.toggle('active', i === currentPage);
+      pageBtn.addEventListener('click', () => {
+        currentPage = i;
         renderMods();
         updatePagination();
+      });
+      pageNumbersContainer.appendChild(pageBtn);
     }
+  }
 
-    function renderMods() {
-        const filteredMods = filterMods();
-        modsList.innerHTML = '';
-
-        if (filteredMods.length === 0) {
-            noModsMessage.textContent = searchQuery ? 
-                `No mods found for "${searchQuery}"` : 
-                'No mods match the current filters.';
-            noModsMessage.style.display = 'block';
-            return;
-        }
-
-        noModsMessage.style.display = 'none';
-        paginateMods(filteredMods).forEach(mod => {
-            modsList.appendChild(createModElement(mod));
-        });
+  function goToPrevPage() {
+    if (currentPage > 1) {
+      currentPage--;
+      renderMods();
+      updatePagination();
     }
+  }
 
-    function filterMods() {
-        let filtered = modsData;
-        if (currentFilter !== 'all') {
-            filtered = filtered.filter(mod => mod.game === currentFilter);
-        }
-        if (searchQuery) {
-            filtered = filtered.filter(mod => 
-                mod.title.toLowerCase().includes(searchQuery)
-            );
-        }
-        return filtered;
+  function goToNextPage() {
+    const filteredMods = filterMods();
+    const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
+    if (currentPage < totalPages) {
+      currentPage++;
+      renderMods();
+      updatePagination();
     }
+  }
 
-    function paginateMods(mods) {
-        const startIndex = (currentPage - 1) * itemsPerPage;
-        return mods.slice(startIndex, startIndex + itemsPerPage);
-    }
-
-    function createModElement(mod) {
-        const versions = mod.versions || {};
-        const versionKeys = Object.keys(versions);
-        const hasVersions = versionKeys.length > 0;
-
-        const modElement = document.createElement('div');
-        modElement.classList.add('mod-item');
-        modElement.innerHTML = `
-            <div class="mod-header">
-                <div class="mod-info">
-                    <h3 class="game-name">${mod.game || 'Unknown Game'}</h3>
-                    <h2 class="mod-title">${escapeHtml(mod.title || 'Untitled Mod')}</h2>
-                    <div class="open-preview-wrapper">
-                        <span class="open-label">Open:</span>
-                        <div class="open-preview">
-                            ${mod.modImage1 ? `<img src="${mod.modImage1}" class="open-img left">` : ''}
-                            <img src="icons-buttons/plus.png" class="open-img center">
-                            ${mod.modImage2 ? `<img src="${mod.modImage2}" class="open-img right">` : ''}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="mod-images">
-                ${mod.modImage1 ? `<img src="${mod.modImage1}" alt="">` : ''}
-                ${mod.modImage2 ? `<img src="${mod.modImage2}" alt="">` : ''}
-            </div>
-            ${hasVersions ? `
-            <div class="version-select">
-                <label>Select Version:</label>
-                <select>
-                    ${versionKeys.map(v => `<option value="${versions[v]}">${v} ${mod.fileSize ? `(${mod.fileSize})` : ''}</option>`).join('')}
-                </select>
-            </div>` : '<p class="no-versions">Coming soon</p>'}
-            <div class="mod-footer">
-                <small>Author: ${mod.author || 'Unknown'}</small>
-            </div>
-            <a href="${hasVersions ? versions[versionKeys[0]] : '#'}" 
-               class="download-btn ${!hasVersions ? 'disabled-link' : ''}">
-                ${hasVersions ? "Download Now" : "Coming soon"}
-            </a>
-        `;
-
-        const select = modElement.querySelector('select');
-        if (select) {
-            select.addEventListener('change', (e) => {
-                const downloadBtn = modElement.querySelector('.download-btn');
-                downloadBtn.href = e.target.value;
-            });
-        }
-
-        return modElement;
-    }
-
-    function escapeHtml(text) {
-        return text ? text.toString()
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;") : '';
-    }
-
-    function updatePagination() {
-        const filteredMods = filterMods();
-        const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
-        
-        pageNumbersContainer.innerHTML = '';
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-
-        if (totalPages <= 1) return;
-
-        for (let i = 1; i <= totalPages; i++) {
-            const pageBtn = document.createElement('button');
-            pageBtn.textContent = i;
-            pageBtn.classList.toggle('active', i === currentPage);
-            pageBtn.addEventListener('click', () => {
-                currentPage = i;
-                renderMods();
-                updatePagination();
-            });
-            pageNumbersContainer.appendChild(pageBtn);
-        }
-    }
-
-    function goToPrevPage() {
-        if (currentPage > 1) {
-            currentPage--;
-            renderMods();
-            updatePagination();
-        }
-    }
-
-    function goToNextPage() {
-        const filteredMods = filterMods();
-        const totalPages = Math.ceil(filteredMods.length / itemsPerPage);
-        if (currentPage < totalPages) {
-            currentPage++;
-            renderMods();
-            updatePagination();
-        }
-    }
-
-    function showError(message) {
-        modsList.innerHTML = `<div class="error">${message}</div>`;
-    }
+  function showError(message) {
+    modsList.innerHTML = `<div class="error">${message}</div>`;
+    resultsCount.textContent = '';
+  }
 });

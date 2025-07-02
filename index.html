@@ -1,60 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Mods Hub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Mods Hub</title>
+  <meta name="description" content="Download premium mods for GTA V, Minecraft, Fortnite, and more." />
+  <meta name="keywords" content="game mods, gta mods, minecraft mods, fortnite mods, ps3 mods" />
+  <meta name="author" content="Game Mods Hub Team" />
+  <meta property="og:title" content="Game Mods Hub" />
+  <meta property="og:description" content="Premium mods for your favorite games." />
+  <meta property="og:image" content="https://yourdomain.com/preview.jpg" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <noscript>
-        <div class="error">
-            <h2>JavaScript is required for this website.</h2>
-        </div>
-    </noscript>
-
-    <header class="main-header">
-        <h1>Game Mods Hub</h1>
-        <p>Premium mods for your favorite games</p>
-    </header>
-
-    <div class="search-container">
-        <div class="search-box">
-            <input type="search" id="search" placeholder="Search for mods...">
-        </div>
-        <div class="filters" id="filters">
-            <button class="filter-btn active" data-game="all">All</button>
-            <button class="filter-btn" data-game="GTA">GTA V</button>
-            <button class="filter-btn" data-game="Minecraft">Minecraft</button>
-            <button class="filter-btn" data-game="Fortnite">Fortnite</button>
-            <button class="filter-btn" data-game="AmongUs">Among Us</button>
-        </div>
+  <noscript>
+    <div class="error">
+      <h2>JavaScript is required for this website.</h2>
     </div>
+  </noscript>
 
-    <section class="mods-list" id="mods-list">
-        <div id="loading-message" class="loading-message">
-            <div class="loading-indicator"></div>
-            <p>Loading mods...</p>
-        </div>
-        <p id="no-mods-message">No mods found.</p>
-    </section>
+  <header class="main-header">
+    <h1>Game Mods Hub</h1>
+    <p>Premium mods for your favorite games</p>
+    <button id="darkModeToggle" aria-label="Toggle Dark Mode">Toggle Dark Mode</button>
+  </header>
 
-    <div class="pagination">
-        <button id="prev">Previous</button>
-        <div class="page-numbers" id="page-numbers"></div>
-        <button id="next">Next</button>
+  <div class="search-container">
+    <div class="search-box">
+      <input type="search" id="search" placeholder="Search by game name..." />
     </div>
+  </div>
 
-    <footer class="footer">
-        <p>&copy; 2025 Game Mods Hub.</p>
-        <div class="footer-links">
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="contact.html">Contact</a>
-        </div>
-    </footer>
+  <section class="mods-list" id="mods-list">
+    <div id="loading-message" class="loading-message">
+      <div class="loading-indicator"></div>
+      <p>Loading mods...</p>
+    </div>
+    <p id="no-mods-message">No mods found.</p>
+  </section>
 
-    <script src="script.js"></script>
+  <div class="pagination">
+    <button id="prev">Previous</button>
+    <div class="page-numbers" id="page-numbers"></div>
+    <button id="next">Next</button>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Game Mods Hub.</p>
+    <div class="footer-links">
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
