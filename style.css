@@ -94,37 +94,6 @@ body.dark-mode .search-box {
     color: var(--text-light);
 }
 
-.filters {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.filter-btn {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 20px;
-    background-color: #e0e0e0;
-    cursor: pointer;
-    transition: background 0.3s ease, color 0.3s ease;
-}
-
-.filter-btn.active, .filter-btn:hover {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
-    color: var(--text-light);
-}
-
-body.dark-mode .filter-btn {
-    background-color: #444;
-    color: var(--text-light);
-}
-
-body.dark-mode .filter-btn.active, body.dark-mode .filter-btn:hover {
-    background: linear-gradient(135deg, var(--primary-dark-mode), #cc7000);
-    color: var(--text-light);
-}
-
 .mods-list {
     display: flex;
     flex-direction: column;
@@ -198,21 +167,6 @@ body.dark-mode .mod-item {
 .open-preview img.center {
     width: 25px;
     height: 25px;
-}
-
-.mod-images {
-    display: flex;
-    gap: 15px;
-    margin: 20px 0;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.mod-images img {
-    max-width: 150px;
-    max-height: 150px;
-    border-radius: var(--border-radius);
-    object-fit: contain;
 }
 
 .version-select {
@@ -368,4 +322,134 @@ body.dark-mode .pc-mod-item {
 
 .pc-mods-list::-webkit-scrollbar {
     display: none;
+}
+
+body.contact-page {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    padding: 3rem 1rem;
+}
+
+h1.contact-title {
+    text-align: center;
+    font-size: 3rem;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(45deg, #00ffe1, #ff00c8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 15px #00ffe1;
+    margin-bottom: 4rem;
+}
+
+.team {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.08);
+    transform: translateY(50px);
+    opacity: 0;
+    transition: all 0.6s ease-out;
+}
+
+.card.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.avatar {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 4px solid #00ffe1;
+    box-shadow: 0 0 20px #00ffe1;
+    object-fit: cover;
+    margin-bottom: 1rem;
+}
+
+.name {
+    font-size: 1.4rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #00ffe1, #ff00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.3rem;
+}
+
+.badge-rank {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ff00c8, #00ffe1);
+    border-radius: 50px;
+    color: #fff;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    margin-bottom: 1.2rem;
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.4), inset 0 0 6px rgba(255, 255, 255, 0.2);
+    transition: transform 0.3s ease;
+}
+
+.card:hover .badge-rank {
+    transform: scale(1.08);
+}
+
+.telegram-btn {
+    display: inline-block;
+    background: #0088cc;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 0 10px #0088cc, 0 0 20px #0088cc inset;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.telegram-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 25px #00acee, 0 0 30px #00acee inset;
+}
+
+@media (max-width: 500px) {
+    h1.contact-title {
+        font-size: 2.2rem;
+    }
+
+    .avatar {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+body.terms-page, body.privacy-page {
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+    line-height: 1.8;
+    max-width: 800px;
+    margin: auto;
+}
+
+h1.terms-title, h1.privacy-title {
+    color: #ff6600;
+}
+
+body.dark-mode.terms-page, body.dark-mode.privacy-page {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
 }
