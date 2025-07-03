@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Game Mods - PC View</title>
-  <meta name="description" content="Wide screen PC version of Game Mods Hub" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Game Mods - PC View</title>
+    <meta name="description" content="Wide screen PC version of Game Mods Hub" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="main-header">
-    <h1>Game Mods - PC View</h1>
-    <p>Optimized for large screens</p>
-    <button id="darkModeToggle" aria-label="Toggle Dark Mode">Toggle Dark Mode</button>
-  </header>
+    <header class="main-header">
+        <h1>Game Mods - PC View</h1>
+        <p>Optimized for large screens</p>
+        <button id="darkModeToggle" aria-label="Toggle Dark Mode">Toggle Dark Mode</button>
+    </header>
 
-  <div class="search-container">
-    <div class="search-box">
-      <input type="search" id="search" placeholder="Search by game name..." />
+    <div class="search-container">
+        <div class="search-box">
+            <input type="search" id="search" placeholder="Search by game name..." />
+        </div>
     </div>
-  </div>
 
-  <section class="pc-mods-list" id="mods-list">
-    <div id="loading-message" class="loading-message">
-      <div class="loading-indicator"></div>
-      <p>Loading mods...</p>
+    <section class="pc-mods-list" id="mods-list">
+        <div id="loading-message" class="loading-message">
+            <div class="loading-indicator"></div>
+            <p>Loading mods...</p>
+        </div>
+        <p id="no-mods-message">No mods found.</p>
+    </section>
+
+    <div class="pagination">
+        <button id="prev">Previous</button>
+        <div class="page-numbers" id="page-numbers"></div>
+        <button id="next">Next</button>
     </div>
-    <p id="no-mods-message">No mods found.</p>
-  </section>
 
-  <footer class="footer">
-    <p>&copy; 2025 Game Mods Hub.</p>
-    <div class="footer-links">
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="contact.html">Contact</a>
-    </div>
-  </footer>
+    <footer class="footer">
+        <p>&copy; 2025 Game Mods Hub.</p>
+        <div class="footer-links">
+            <a href="privacy.html">Privacy</a>
+            <a href="terms.html">Terms</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </footer>
 
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

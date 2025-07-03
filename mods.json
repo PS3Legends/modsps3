@@ -1,26 +1,25 @@
 [
-  {
-    "id": "gta-v-real-life-mod",
-    "title": "GTA V Real Life Mod",
-    "game": "GTA",
-    "modImage1": "previews/mod1-1.jpg",
-    "modImage2": "previews/mod1-2.jpg",
-    "versions": {
-      "v1.0": "",
-      "v2.0": "downloads/gta-mod-v2.zip"
+    {
+        "id": "gta-v-real-life-mod",
+        "title": "GTA V Real Life Mod",
+        "game": "GTA V",
+        "modImage1": "previews/mod1-1.jpg",
+        "modImage2": "previews/mod1-2.jpg",
+        "versions": {
+            "v2.0": "downloads/gta-mod-v2.zip"
+        },
+        "fileSize": "45MB",
+        "author": "ModDevTeam"
     },
-    "fileSize": "45MB",
-    "author": "ModDevTeam"
-  },
-  {
-    "id": "minecraft-shaders",
-    "title": "Minecraft Ultra Shaders",
-    "game": "Minecraft",
-    "modImage1": "previews/mc-shader1.jpg",
-    "versions": {
-      "v1.2": "downloads/mc-shader.zip"
-    },
-    "fileSize": "32MB",
-    "author": "ShaderMaster"
-  }
+    {
+        "id": "minecraft-shaders",
+        "title": "Minecraft Ultra Shaders",
+        "game": "Minecraft",
+        "modImage1": "previews/mc-shader1.jpg",
+        "versions": {
+            "v1.2": "downloads/mc-shader.zip"
+        },
+        "fileSize": "32MB",
+        "author": "ShaderMaster"
+    }
 ]
